@@ -51,7 +51,7 @@ MonoBehaviour:
   game: 
   messageQueue: {fileID: 3886008500681669405}
   commandHandler: {fileID: 2678616479181197365}
-  websocketUrl: 
+  websocketUrl: ws://localhost:8000
 --- !u!114 &3886008500681669405
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,6 +9,9 @@ using UnityEngine;
 
 namespace NeuroSdk.Actions
 {
+    /// <summary>
+    /// A wrapper class around the concept of an action window, which handles sending context, registering actions, forcing actions and unregistering the actions afterwards.
+    /// </summary>
     [PublicAPI]
     public sealed class ActionWindow : MonoBehaviour
     {
@@ -16,6 +19,9 @@ namespace NeuroSdk.Actions
 
         private static bool _isCreatedCorrectly = false;
 
+        /// <summary>
+        /// Creates a new ActionWindow. If the parent is destroyed, this ActionWindow will be automatically ended.
+        /// </summary>
         public static ActionWindow Create(Transform parent)
         {
             try
@@ -65,6 +71,9 @@ namespace NeuroSdk.Actions
             return true;
         }
 
+        /// <summary>
+        /// Register this ActionWindow, sending an actions register to the websocket and making this window immutable.
+        /// </summary>
         public void Register()
         {
             if (_state != State.Building)
@@ -75,7 +84,7 @@ namespace NeuroSdk.Actions
 
             if (!string.IsNullOrEmpty(_contextMessage))
                 Context.Send(_contextMessage, _contextSilent!.Value);
-            NeuroActionHandler.RegisterActions(true, _actions);
+            NeuroActionHandler.RegisterActions(_actions);
 
             _state = State.Registered;
         }
@@ -87,6 +96,9 @@ namespace NeuroSdk.Actions
         private string? _contextMessage;
         private bool? _contextSilent;
 
+        /// <summary>
+        /// Set a context message to be sent alongside the action register.
+        /// </summary>
         public void SetContext(string message, bool silent = false)
         {
             if (!ValidateFrozen()) return;
@@ -101,6 +113,9 @@ namespace NeuroSdk.Actions
 
         private readonly List<INeuroAction> _actions = new();
 
+        /// <summary>
+        /// Add a new action to the list of possible actions that Neuro can pick from
+        /// </summary>
         public void AddAction(INeuroAction action)
         {
             if (!ValidateFrozen()) return;
@@ -116,6 +131,12 @@ namespace NeuroSdk.Actions
         private Func<string>? _forceQueryGetter;
         private Func<string?>? _forceStateGetter;
 
+        /// <summary>
+        /// Specify a condition under which the actions should be forced.
+        /// </summary>
+        /// <param name="shouldForce">When this returns true, the actions will be forced.</param>
+        /// <param name="queryGetter">A getter for the query of the action force, invoked at force-time.</param>
+        /// <param name="stateGetter">A getter for the state of the action force, invoked at force-time.</param>
         public void SetForce(Func<bool> shouldForce, Func<string> queryGetter, Func<string?> stateGetter)
         {
             if (!ValidateFrozen()) return;
@@ -125,9 +146,18 @@ namespace NeuroSdk.Actions
             _forceStateGetter = stateGetter;
         }
 
+        /// <summary>
+        /// Specify a condition under which the actions should be forced.
+        /// </summary>
+        /// <param name="shouldForce">When this returns true, the actions will be forced.</param>
         public void SetForce(Func<bool> shouldForce, string query, string? state)
             => SetForce(shouldForce, () => query, () => state);
 
+        /// <summary>
+        /// Specify a time in seconds after which the actions should be forced.
+        /// </summary>
+        /// <param name="queryGetter">A getter for the query of the action force, invoked at force-time.</param>
+        /// <param name="stateGetter">A getter for the state of the action force, invoked at force-time.</param>
         public void SetForce(float afterSeconds, Func<string> queryGetter, Func<string?> stateGetter)
         {
             float time = afterSeconds;
@@ -143,10 +173,11 @@ namespace NeuroSdk.Actions
             }
         }
 
+        /// <summary>
+        /// Specify a time in seconds after which the actions should be forced.
+        /// </summary>
         public void SetForce(float afterSeconds, string query, string? state)
             => SetForce(afterSeconds, () => query, () => state);
-
-        #endregion
 
         private void SendForce()
         {
@@ -155,10 +186,16 @@ namespace NeuroSdk.Actions
             WebsocketConnection.TrySend(new ActionsForce(_forceQueryGetter!(), _forceStateGetter!(), _actions));
         }
 
+        #endregion
+
         #region Ending
 
         private Func<bool>? _shouldEndFunc;
 
+        /// <summary>
+        /// Specify a condition under which the actions should be unregisterd and this window closed.
+        /// </summary>
+        /// <param name="shouldEnd">When this returns true, the actions will be unregistered.</param>
         public void SetEnd(Func<bool> shouldEnd)
         {
             if (!ValidateFrozen()) return;
@@ -166,6 +203,9 @@ namespace NeuroSdk.Actions
             _shouldEndFunc = shouldEnd;
         }
 
+        /// <summary>
+        /// Specify a time in seconds after which the actions should be unregistered and this window closed.
+        /// </summary>
         public void SetEnd(float afterSeconds)
         {
             float time = afterSeconds;
@@ -181,10 +221,19 @@ namespace NeuroSdk.Actions
             }
         }
 
+        private void OnDestroy()
+        {
+            if (_state == State.Ended) return;
+            End();
+        }
+
         #endregion
 
         #region Handling
 
+        /// <summary>
+        /// Run an <see cref="ExecutionResult"/> through this ActionWindow. This is invoked automatically in <see cref="NeuroAction"/>, but if you are not using that class you will need to invoke this manually.
+        /// </summary>
         public ExecutionResult Result(ExecutionResult result)
         {
             if (_state <= State.Building) throw new InvalidOperationException("Cannot handle a result before registering thet ActionWindow.");
@@ -213,7 +262,7 @@ namespace NeuroSdk.Actions
 
         private void End()
         {
-            NeuroActionHandler.UnregisterActions(true, _actions);
+            NeuroActionHandler.UnregisterActions(_actions);
             _shouldForceFunc = null;
             _shouldEndFunc = null;
             _state = State.Ended;

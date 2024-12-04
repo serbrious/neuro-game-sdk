@@ -3,7 +3,7 @@
 namespace NeuroSdk.Utilities
 {
     [PublicAPI]
-    public class FormatString
+    public sealed class FormatString
     {
         private readonly string _str;
 

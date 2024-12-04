@@ -2,7 +2,7 @@
 
 namespace NeuroSdk
 {
-    public static class Strings
+    internal static class Strings
     {
         public static readonly FormatString MessageHandlerFailedCaughtException = "Message handler failed with exception: {0}";
         public const string VedalFaultSuffix = " (This is probably not your fault, blame Vedal.)";

@@ -8,12 +8,20 @@ namespace NeuroSdk.Messages.Outgoing
 {
     public sealed class ActionsUnregister : OutgoingMessageBuilder
     {
-        public ActionsUnregister(IEnumerable<INeuroAction> actions)
+        public ActionsUnregister(IEnumerable<string> actionNames)
         {
-            Names = actions.Select(action => action.Name).ToList();
+            Names = actionNames.ToList();
+        }
+
+        public ActionsUnregister(IEnumerable<INeuroAction> actions) : this(actions.Select(a => a.Name))
+        {
         }
 
         public ActionsUnregister(params INeuroAction[] actions) : this((IEnumerable<INeuroAction>) actions)
+        {
+        }
+
+        public ActionsUnregister(params string[] actionNames) : this((IEnumerable<string>) actionNames)
         {
         }
 

@@ -3,12 +3,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using NeuroSdk.Messages.Outgoing;
 using NeuroSdk.Websocket;
 using UnityEngine;
 
 namespace NeuroSdk.Actions
 {
+    [PublicAPI]
     public sealed class NeuroActionHandler : MonoBehaviour
     {
         private static List<INeuroAction> _currentlyRegisteredActions = new();
@@ -23,26 +25,26 @@ namespace NeuroSdk.Actions
             _currentlyRegisteredActions = null!;
         }
 
-        public static void RegisterActions(bool sendToNeuro, IReadOnlyCollection<INeuroAction> newActions)
+        public static void RegisterActions(IReadOnlyCollection<INeuroAction> newActions)
         {
             _currentlyRegisteredActions.RemoveAll(oldAction => newActions.Any(newAction => oldAction.Name == newAction.Name));
             _dyingActions.RemoveAll(oldAction => newActions.Any(newAction => oldAction.Name == newAction.Name));
             _currentlyRegisteredActions.AddRange(newActions);
-            if (sendToNeuro) WebsocketConnection.TrySend(new ActionsRegister(newActions));
+            WebsocketConnection.TrySend(new ActionsRegister(newActions));
         }
 
-        public static void RegisterActions(bool sendToNeuro, params INeuroAction[] newActions)
-            => RegisterActions(sendToNeuro, (IReadOnlyCollection<INeuroAction>) newActions);
+        public static void RegisterActions(params INeuroAction[] newActions)
+            => RegisterActions((IReadOnlyCollection<INeuroAction>) newActions);
 
-        public static void UnregisterActions(bool sendToNeuro, IReadOnlyCollection<INeuroAction> removeActionsList)
+        public static void UnregisterActions(IEnumerable<string> removeActionsList)
         {
-            INeuroAction[] actionsToRemove = _currentlyRegisteredActions.Where(oldAction => removeActionsList.Any(removeAction => oldAction.Name == removeAction.Name)).ToArray();
+            INeuroAction[] actionsToRemove = _currentlyRegisteredActions.Where(oldAction => removeActionsList.Any(removeAction => oldAction.Name == removeAction)).ToArray();
 
             _currentlyRegisteredActions.RemoveAll(actionsToRemove.Contains);
             _dyingActions.AddRange(actionsToRemove);
             removeActions().Forget();
 
-            if (sendToNeuro) WebsocketConnection.TrySend(new ActionsUnregister(removeActionsList));
+            WebsocketConnection.TrySend(new ActionsUnregister(removeActionsList));
 
             return;
 
@@ -53,8 +55,14 @@ namespace NeuroSdk.Actions
             }
         }
 
-        public static void UnregisterActions(bool sendToNeuro, params INeuroAction[] removeActionsList)
-            => UnregisterActions(sendToNeuro, (IReadOnlyCollection<INeuroAction>) removeActionsList);
+        public static void UnregisterActions(IEnumerable<INeuroAction> removeActionsList)
+            => UnregisterActions(removeActionsList.Select(a => a.Name));
+
+        public static void UnregisterActions(params INeuroAction[] removeActionsList)
+            => UnregisterActions((IReadOnlyCollection<INeuroAction>) removeActionsList);
+
+        public static void UnregisterActions(params string[] removeActionNamesList)
+            => UnregisterActions((IReadOnlyCollection<string>) removeActionNamesList);
 
         public static void ResendRegisteredActions()
         {

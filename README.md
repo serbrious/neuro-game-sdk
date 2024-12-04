@@ -45,6 +45,7 @@ Vedal said you can use this for more complex games but he told me "you wouldn't 
 Please familiarize yourself with the API documentation before using the SDKs.
 
 - [API Documentation](./API/README.md)
-- [Unity SDK Documentation](./Unity/README.md)
-- [Unity Mod SDK Documentation]
-- [Godot SDK Documentation]
+- [Unity SDK](./Unity/README.md)
+- [Unity Mod SDK]
+- [Godot SDK]
+- [Randy](./Randy/README.md)

@@ -180,17 +180,5 @@ namespace NeuroSdk.Json
         public string? Format { get; set; }
 
         #endregion
-
-        [Obsolete("", true)]
-        public void Apply(ISchemaModifier modifier)
-        {
-            modifier.Apply(this);
-        }
-
-        [Obsolete("", true)]
-        public void Apply<T>() where T : ISchemaModifier, new()
-        {
-            Apply(new T());
-        }
     }
 }
