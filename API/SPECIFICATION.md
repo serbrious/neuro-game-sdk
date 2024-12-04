@@ -47,7 +47,7 @@ An action is a registerable command that Neuro can execute whenever she wants.
 #### Parameters
 - `name`: The name of the action, which is its _unique identifier_. This should be a lowercase string, with words separated by underscores or dashes (e.g. `"join_friend_lobby"`, `"use_item"`).
 - `description`: A plaintext description of what this action does. **This information will be directly received by Neuro.**
-- `schema`: A **valid** JSON schema object that describes how the response data should look like. If your action does not have any parameters, you can omit this field or set it to `{}`.
+- `schema`: A **valid** simple JSON schema object that describes how the response data should look like. If your action does not have any parameters, you can omit this field or set it to `{}`.
 
 ## Outgoing Messages (C2S, Game to Neuro)
 
@@ -146,7 +146,7 @@ This message forces Neuro to execute one of the listed actions as soon as possib
 This message needs to be sent as soon as possible after an action is validated, to allow Neuro to continue.
 
 > [!Important]  
-> Until you send an action result, Neuro will be frozen and unable to do anything!  
+> Until you send an action result, Neuro will just be waiting for the result of her action!  
 > Please make sure to send this as soon as possible.   
 > It should usually be sent after validating the action parameters, before it is actually executed in-game
 
@@ -203,7 +203,7 @@ This message is sent by Neuro when she tries to execute an action. You should re
 #### Parameters
 - `id`: A unique id for the action. You should use it when sending back the action result.
 - `name`: The name of the action that Neuro is trying to execute.
-- `data`: The JSON-stringified data for the action, as sent by Neuro. This **_should\*_** be an object that matches the JSON schema you provided when registering the action. If you did not provide a schema, this parameter will be `undefined`.
+- `data`: The JSON-stringified data for the action, as sent by Neuro. This **_should\*_** be an object that matches the JSON schema you provided when registering the action. If you did not provide a schema, this parameter will usually be `undefined`.
 
 > [!Caution]  
 > The `data` parameter comes directly from Neuro, so there is a chance it might be malformed, contain invalid JSON, or not match the provided schema exactly.  
