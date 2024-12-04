@@ -28,13 +28,15 @@ Since you need to describe the entire game state in text, and receive actions in
 - CSGO? no lol
 - Almost any visual novel ====> YES
 - Almost any card game ====> YES
-- Any RTS ====> NO
+- Any RTS ====> vedal said maybe but he has no clue what he's talking about
 - Most FPP ====> NO
 - Shooters ====> NO
 - Platformers ====> NO
 - Tic tac toe? yes
 
 You get the idea. Turn based games in general are perfect for this. Anything else and you're kinda stretching the limits of what the API can do.
+
+Vedal said you can use this for more complex games but he told me "you wouldn't get it" so you lot probably wouldn't get it either.
 
 </details>
 
