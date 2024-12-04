@@ -1,6 +1,4 @@
-## Neuro API Documentation
-
-The Neuro API works by communicating between the game and Neuro using a websocket. The game needs to connect to a websocket server url, that should be configurable somehow, preferably through a file.
+# Neuro API Specification
 
 Messages sent by the game (client) to Neuro (server) have the following format:
 ```ts
@@ -147,7 +145,7 @@ This message forces Neuro to execute one of the listed actions as soon as possib
 
 This message needs to be sent as soon as possible after an action is validated, to allow Neuro to continue.
 
-> [!Warning]  
+> [!Important]  
 > Until you send an action result, Neuro will be frozen and unable to do anything!  
 > Please make sure to send this as soon as possible.   
 > It should usually be sent after validating the action parameters, before it is actually executed in-game
