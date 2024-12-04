@@ -13,9 +13,10 @@ This is the documentation for the Unity version of the Neuro SDK. If you are loo
 1. Install UniTask in your project [(guide)](https://github.com/Cysharp/UniTask?tab=readme-ov-file#install-via-git-url)
 2. Install from this git URL: `https://github.com/VedalAI/neuro-game-sdk.git?path=Unity/Assets`
 
-### Manual Installation
+### Manual Installation (if you want to make changes)
 
-Clone or download this repository, then copy the `Unity/Assets` folder into your Unity project's `Assets` or `Packages` folder.
+1. Install UniTask in your project [(guide)](https://github.com/Cysharp/UniTask?tab=readme-ov-file#install-via-git-url)
+2. Clone or download this repository, then copy the `Unity/Assets` folder into your Unity project's `Assets` or `Packages` folder.
 
 ## Setup
 
