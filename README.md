@@ -4,8 +4,6 @@ This repository contains the API documentation for allowing [Neuro-sama](https:/
 
 There are also SDKs available for Unity and Godot. If you would like to use the Neuro API in a different engine or programming language, you will have to implement the websocket protocol yourself. If you do so, consider opening a pull request to this repository to share your implementation with others.
 
-Please familiarize yourself with the API documentation before using the SDKs.
-
 ## Information 
 
 The SDKs have been created and optimized for turn-based games, namely Inscryption, Liar's Bar and Buckshot Roulette.
@@ -21,7 +19,7 @@ Since you need to describe the entire game state in text, and receive actions in
 - Buckshot Roulette? yes
 - Among Us? no!!!
 - Skyrim? no
-- League of Legends? no
+- League of Legends? no (thank god)
 - Celeste? no
 - KTANE? yes i guess
 - Uno? YES
@@ -29,10 +27,21 @@ Since you need to describe the entire game state in text, and receive actions in
 - Euro Truck Sim? no
 - CSGO? no lol
 - Almost any visual novel ====> YES
+- Almost any card game ====> YES
+- Any RTS ====> NO
+- Most FPP ====> NO
+- Shooters ====> NO
+- Platformers ====> NO
+- Tic tac toe? yes
+
+You get the idea. Turn based games in general are perfect for this. Anything else and you're kinda stretching the limits of what the API can do.
 
 </details>
 
 ## Links
+
+Please familiarize yourself with the API documentation before using the SDKs.
+
 - [API Documentation](./API/README.md)
 - [Unity SDK Documentation](./Unity/README.md)
 - [Unity Mod SDK Documentation]
