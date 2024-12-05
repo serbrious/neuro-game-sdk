@@ -140,6 +140,8 @@ This message forces Neuro to execute one of the listed actions as soon as possib
 - `state`: An arbitrary string that describes the current state of the game. This can be plaintext, JSON, Markdown, or any other format. **This information will be directly received by Neuro.**
 - `query`: A plaintext message that tells Neuro what she is currently suppoesd to be doing (e.g. `"It is now your turn. Please perform an action. If you want to use any items, you should use them before picking up the shotgun."`).
 - `ephemeral_context`: If `false`, the context provided in the `state` and `query` parameters will be remembered by Neuro after the actions force is compelted. If `true`, Neuro will only remember it for the duration of the actions force.
+- `action_names`: The names of the actions that Neuro should choose from.
+<!-- - `main_thread: bool?`: Same as above. -->
 
 ### Action Result
 
