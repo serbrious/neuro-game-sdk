@@ -10,15 +10,16 @@ namespace NeuroSdk.Messages.Outgoing
 {
     public sealed class ActionsForce : OutgoingMessageBuilder
     {
-        public ActionsForce(string query, string? state, IEnumerable<INeuroAction> actions)
+        public ActionsForce(string query, string? state, bool? ephemeralContext, IEnumerable<INeuroAction> actions)
         {
             _query = query;
             _state = state;
+            _ephemeralContext = ephemeralContext;
             _actionNames = actions.Select(a => a.Name).ToArray();
         }
 
-        public ActionsForce(string query, string? state, params INeuroAction[] actions)
-            : this(query, state, (IEnumerable<INeuroAction>)actions)
+        public ActionsForce(string query, string? state, bool? ephemeralContext, params INeuroAction[] actions)
+            : this(query, state, ephemeralContext, (IEnumerable<INeuroAction>)actions)
         {
         }
 
@@ -30,7 +31,10 @@ namespace NeuroSdk.Messages.Outgoing
         [JsonProperty("query", Order = 10)]
         private readonly string _query;
 
-        [JsonProperty("action_names", Order = 20)]
+        [JsonProperty("ephemeral_context", Order = 20)]
+        private readonly bool? _ephemeralContext;
+
+        [JsonProperty("action_names", Order = 30)]
         private readonly string[] _actionNames;
     }
 }

@@ -130,6 +130,7 @@ namespace NeuroSdk.Actions
         private Func<bool>? _shouldForceFunc;
         private Func<string>? _forceQueryGetter;
         private Func<string?>? _forceStateGetter;
+        private bool? _forceEphemeralContext;
 
         /// <summary>
         /// Specify a condition under which the actions should be forced.
@@ -137,32 +138,36 @@ namespace NeuroSdk.Actions
         /// <param name="shouldForce">When this returns true, the actions will be forced.</param>
         /// <param name="queryGetter">A getter for the query of the action force, invoked at force-time.</param>
         /// <param name="stateGetter">A getter for the state of the action force, invoked at force-time.</param>
-        public void SetForce(Func<bool> shouldForce, Func<string> queryGetter, Func<string?> stateGetter)
+        /// <param name="ephemeralContext">If true, the query and state won't be remembered after the action force is finished.</param>
+        public void SetForce(Func<bool> shouldForce, Func<string> queryGetter, Func<string?> stateGetter, bool? ephemeralContext)
         {
             if (!ValidateFrozen()) return;
 
             _shouldForceFunc = shouldForce;
             _forceQueryGetter = queryGetter;
             _forceStateGetter = stateGetter;
+            _forceEphemeralContext = ephemeralContext;
         }
 
         /// <summary>
         /// Specify a condition under which the actions should be forced.
         /// </summary>
         /// <param name="shouldForce">When this returns true, the actions will be forced.</param>
-        public void SetForce(Func<bool> shouldForce, string query, string? state)
-            => SetForce(shouldForce, () => query, () => state);
+        /// <param name="ephemeralContext">If true, the query and state won't be remembered after the action force is finished.</param>
+        public void SetForce(Func<bool> shouldForce, string query, string? state, bool? ephemeralContext)
+            => SetForce(shouldForce, () => query, () => state, ephemeralContext);
 
         /// <summary>
         /// Specify a time in seconds after which the actions should be forced.
         /// </summary>
         /// <param name="queryGetter">A getter for the query of the action force, invoked at force-time.</param>
         /// <param name="stateGetter">A getter for the state of the action force, invoked at force-time.</param>
-        public void SetForce(float afterSeconds, Func<string> queryGetter, Func<string?> stateGetter)
+        /// <param name="ephemeralContext">If true, the query and state won't be remembered after the action force is finished.</param>
+        public void SetForce(float afterSeconds, Func<string> queryGetter, Func<string?> stateGetter, bool? ephemeralContext)
         {
             float time = afterSeconds;
 
-            SetForce(shouldForce, queryGetter, stateGetter);
+            SetForce(shouldForce, queryGetter, stateGetter, ephemeralContext);
             return;
 
             bool shouldForce()
@@ -176,14 +181,15 @@ namespace NeuroSdk.Actions
         /// <summary>
         /// Specify a time in seconds after which the actions should be forced.
         /// </summary>
-        public void SetForce(float afterSeconds, string query, string? state)
-            => SetForce(afterSeconds, () => query, () => state);
+        /// <param name="ephemeralContext">If true, the query and state won't be remembered after the action force is finished.</param>
+        public void SetForce(float afterSeconds, string query, string? state, bool? ephemeralContext)
+            => SetForce(afterSeconds, () => query, () => state, ephemeralContext);
 
         private void SendForce()
         {
             _state = State.Forced;
             _shouldForceFunc = null;
-            WebsocketConnection.TrySend(new ActionsForce(_forceQueryGetter!(), _forceStateGetter!(), _actions));
+            WebsocketConnection.TrySend(new ActionsForce(_forceQueryGetter!(), _forceStateGetter!(), _forceEphemeralContext, _actions));
         }
 
         #endregion

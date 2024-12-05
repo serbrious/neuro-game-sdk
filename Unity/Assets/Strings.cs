@@ -12,10 +12,10 @@ namespace NeuroSdk
         public const string ActionFailedNoId = "Action failed. Missing command field 'id'.";
         public const string ActionFailedNoName = "Action failed. Missing command field 'name'.";
         public const string ActionFailedInvalidJson = "Action failed. Could not parse action parameters from JSON.";
+        public const string ActionFailedUnregistered = "This action has been recently unregistered and can no longer be used.";
         public static readonly FormatString ActionFailedUnknownAction = "Action failed. Unknown action '{0}'.";
         public static readonly FormatString ActionFailedCaughtException = "Action failed. Caught exception: {0}";
 
-        public const string ActionFailedUnregistered = "This action has been recently unregistered and can no longer be used.";
         public const string ActionFailedMissingRequiredParameter = "Action failed. Missing required '{0}' parameter.";
         public const string ActionFailedInvalidParameter = "Action failed. Invalid '{0}' parameter.";
     }
