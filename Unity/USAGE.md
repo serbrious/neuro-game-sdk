@@ -24,6 +24,12 @@ Afterwards, if you want to unregister them, you can call `static void NeuroActio
 
 There's also `static void NeuroActionHandler.UnregisterActions(string[] actionNames)` which makes more sense I guess, the above function is just for convenience.
 
+> [!Caution]
+> The Unity SDK currently handles overriding actions with the same name differently than the Neuro API.  
+> The Neuro API will ignore any attempts at registering an action with the same name as an already registered action, even if the schema or description is different.  
+> The Neuro Unity SDK will always override the existing action with the new one.  
+> This needs to be fixed eventually.
+
 ## Action Windows
 
 For using ephemeral actions, such as in a turn-based game during the player's turn, you can use the `ActionWindow` class.
@@ -59,3 +65,9 @@ An action window will be automatically ended when an action is received and is e
 Using the `void ActionWindow.AddAction(INeuroAction action)` method, you can add an action to the window. This will add this action as one of the possible responses that Neuro can pick from.
 
 Each action window can register any number of actions, but only one of them will be returned by Neuro. This just asks Neuro to pick one of them basically.
+
+> [!Caution]
+> The Unity SDK currently handles overriding actions with the same name differently than the Neuro API.  
+> The Neuro API will ignore any attempts at registering an action with the same name as an already registered action, even if the schema or description is different.  
+> The Neuro Unity SDK will always override the existing action with the new one.  
+> This needs to be fixed eventually.
