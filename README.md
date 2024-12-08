@@ -46,6 +46,6 @@ Please familiarize yourself with the API documentation before using the SDKs.
 
 - [API Documentation](./API/README.md)
 - [Unity SDK](./Unity/README.md)
-- [Unity Mod SDK]
-- [Godot SDK]
+- ~~Unity Mod SDK~~ _(Work in progress)_
+- ~~Godot SDK~~ _(Work in progress)_
 - [Randy](./Randy/README.md)
