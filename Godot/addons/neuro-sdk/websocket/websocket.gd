@@ -3,21 +3,15 @@ extends Node
 
 const POLL_INTERVAL := 1.0 / 30.0
 static var game: String
-static var _ws_url: String
 static var _socket: WebSocketPeer
 static var _message_queue := MessageQueue.new()
 static var _command_handler: CommandHandler
-static var _sending_actions := true
 var _elapsed_time := 0.0
 
-@export var _websocket_url: String
 @export var _game: String
 
 func _init() -> void:
-	_ws_url = _websocket_url
 	game = _game
-
-	Log.info("Websocket url is " + _ws_url)
 
 	_command_handler = CommandHandler.new()
 	self.add_child(_command_handler)
@@ -27,10 +21,6 @@ func _ready() -> void:
 	_ws_start()
 
 func _process(delta) -> void:
-	if ProperInput.get_key_down(KEY_A):
-		_sending_actions = !_sending_actions
-		Log.info("Action sending toggled to: " + str(_sending_actions))
-
 	if _socket == null:
 		return
 
@@ -59,8 +49,13 @@ func _ws_start() -> void:
 		if state == WebSocketPeer.STATE_OPEN or state == WebSocketPeer.STATE_CONNECTING:
 			_socket.close()
 
+	var ws_url := OS.get_environment("NEURO_SDK_WS_URL")
+	if not ws_url:
+		Log.error("NEURO_SDK_WS_URL environment variable is not set")
+		return
+
 	_socket = WebSocketPeer.new() # idk if i can reuse the same one
-	var err: int = _socket.connect_to_url(_ws_url)
+	var err: int = _socket.connect_to_url(ws_url)
 	if err != OK:
 		Log.warning("Could not connect to websocket, error code %d" % [err])
 		_ws_reconnect()
@@ -100,9 +95,6 @@ func _ws_write() -> void:
 		Websocket._send_internal(message.get_ws_message())
 
 static func send(message: OutgoingMessage) -> void:
-	if not _sending_actions:
-		if message._get_command().begins_with("action"):
-			return
 	_message_queue.enqueue(message)
 
 static func send_immediate(message: OutgoingMessage) -> void:

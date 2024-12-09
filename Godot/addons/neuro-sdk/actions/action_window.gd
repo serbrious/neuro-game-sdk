@@ -61,6 +61,10 @@ func register() -> void:
 		Log.error("Cannot register an ActionWindow more than once.")
 		return
 
+	if _actions.size() == 0:
+		Log.error("Cannot register an ActionWindow with no actions.")
+		return
+
 	if _context_enabled:
 		Websocket.send(Context.new(_context_message, _context_silent))
 	NeuroActionHandler.register_actions(true, _actions)

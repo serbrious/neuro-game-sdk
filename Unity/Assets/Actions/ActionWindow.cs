@@ -22,14 +22,12 @@ namespace NeuroSdk.Actions
         /// <summary>
         /// Creates a new ActionWindow. If the parent is destroyed, this ActionWindow will be automatically ended.
         /// </summary>
-        public static ActionWindow Create(Transform parent)
+        public static ActionWindow Create(GameObject parent)
         {
             try
             {
                 _isCreatedCorrectly = true;
-                GameObject obj = new("ActionWindow");
-                obj.transform.SetParent(parent);
-                return obj.AddComponent<ActionWindow>();
+                return parent.AddComponent<ActionWindow>();
             }
             finally
             {
@@ -79,6 +77,12 @@ namespace NeuroSdk.Actions
             if (_state != State.Building)
             {
                 Debug.LogError("Cannot register an ActionWindow multiple times.");
+                return;
+            }
+
+            if (_actions.Count == 0)
+            {
+                Debug.LogError("Cannot register an ActionWindow with no actions.");
                 return;
             }
 
@@ -272,7 +276,7 @@ namespace NeuroSdk.Actions
             _shouldForceFunc = null;
             _shouldEndFunc = null;
             _state = State.Ended;
-            Destroy(gameObject);
+            Destroy(this);
         }
 
         #endregion

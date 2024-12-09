@@ -1,5 +1,7 @@
 # Neuro Unity SDK Usage
 
+There is an example of a Tic Tac Toe game implemented with the Neuro API, which you can find [here](./Assets/Examples/).
+
 ## Sending Contexts
 
 For sending context messages, you can use the `static void Context.Send(string message, bool silent)` method.
@@ -9,6 +11,8 @@ For sending context messages, you can use the `static void Context.Send(string m
 In order to create a custom action, you can extend either the `NeuroAction` or `NeuroAction<T>` class. The difference is explained below.
 
 You will need to implement the `Name`, `Description` and `Schema` of the action that you are creating, as well as a `Validate` and `ExecuteAsync` method.
+
+If your action is not going to be used in an `ActionWindow`, you can pass `null` to that parameter in the base constructor. Otherwise, you should take in an `ActionWindow` parameter in your own constructor, and pass that down.
 
 The `Validate` method should validate the incoming data from json, and make sure that it's correct, and it should also perform any kind of initial verifications and finding objects. For example, in Inscryption, checking that the card that Neuro is trying to play is valid, and that there is enough bones for it, as well as finding the actual Card object and saving that as state. At the end you should return either `ExecutionResult.Success()` or `ExecutionResult.Failure(string message)`. 
 
@@ -34,7 +38,7 @@ There's also `static void NeuroActionHandler.UnregisterActions(string[] actionNa
 
 For using ephemeral actions, such as in a turn-based game during the player's turn, you can use the `ActionWindow` class.
 
-Create an instance using `static ActionWindow ActionWindow.Create(Transform parent)`. Be careful with what parent you choose, because if that object is destroyed, the window will be automatically ended.
+Create an instance using `static ActionWindow ActionWindow.Create(GameObject parent)`. Be careful with what parent you choose, because if that object is destroyed, the window will be automatically ended.
 
 After you have finished setting up your action window, you can call `void ActionWindow.Register()` to register it with Neuro. This will make it immutable and register all of the actions over the websocket.
 

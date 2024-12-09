@@ -12,6 +12,10 @@ namespace NeuroSdk.Actions
     [PublicAPI]
     public abstract class NeuroAction : BaseNeuroAction
     {
+        protected NeuroAction(ActionWindow? window) : base(window)
+        {
+        }
+
         protected abstract ExecutionResult Validate(ActionJData actionData);
         protected abstract UniTask ExecuteAsync();
 
@@ -32,6 +36,10 @@ namespace NeuroSdk.Actions
     [PublicAPI]
     public abstract class NeuroAction<TData> : BaseNeuroAction
     {
+        protected NeuroAction(ActionWindow? window) : base(window)
+        {
+        }
+
         protected abstract ExecutionResult Validate(ActionJData actionData, out TData? parsedData);
         protected abstract UniTask ExecuteAsync(TData? parsedData);
 
@@ -53,5 +61,8 @@ namespace NeuroSdk.Actions
     [PublicAPI]
     public abstract class NeuroActionS<TData> : NeuroAction<TData?> where TData : struct
     {
+        protected NeuroActionS(ActionWindow? window) : base(window)
+        {
+        }
     }
 }

@@ -40,7 +40,7 @@ async function onMessageReceived(message: Message) {
         }
 
         case "actions/unregister": {
-            actions = actions.filter(a => !message.data.names.includes(a.name));
+            actions = actions.filter(a => !message.data.action_names.includes(a.name));
             break;
         }
 
@@ -49,7 +49,7 @@ async function onMessageReceived(message: Message) {
                 const actionName: string = message.data.action_names[Math.floor(Math.random() * message.data.action_names.length)];
 
                 if (actionName == "choose_name") {
-                    send({command: "action", data: {id: message.data.id, name: "choose_name", data: JSON.stringify({name: "RANDY"})}});
+                    send({command: "action", data: {id: Math.random().toString(), name: "choose_name", data: JSON.stringify({name: "RANDY"})}});
                     return;
                 }
 
@@ -58,19 +58,8 @@ async function onMessageReceived(message: Message) {
 
                 const responseObj = !action?.schema ? undefined : JSON.stringify(JSONSchemaFaker.generate(action.schema));
 
-                send({command: "action", data: {id: message.data.id, name: action.name, data: responseObj}});
+                send({command: "action", data: {id: Math.random().toString(), name: action.name, data: responseObj}});
             }, 500);
-            break;
-        }
-
-        case "decision": {
-            setTimeout(() => {
-                const action: Action = message.data.actions[Math.floor(Math.random() * message.data.actions.length)];
-
-                const responseObj = !action.schema ? undefined : JSON.stringify(JSONSchemaFaker.generate(action.schema));
-
-                send({command: "action", data: {id: message.data.id, name: action.name, data: responseObj}});
-            }, 2000);
             break;
         }
     }

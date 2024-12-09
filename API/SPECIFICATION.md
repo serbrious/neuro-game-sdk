@@ -21,6 +21,10 @@ Messages sent by Neuro (server) to the game (client) have the following format:
 }
 ```
 
+> [!Warning]  
+> Websocket messages are sent and received in plaintext format (not binary).  
+> If you are sending binary messages, Randy will not have any problems, but Neuro will! Be careful.
+
 #### Parameters
 - `command`: The websocket command. Look below for a list of commands.
 - `game`: The game name. This is used to identify the game. It should _always_ be the same and should not change. You should use the game's display name, including any spaces and symbols (e.g. `"Buckshot Roulette"`). The server will not include this field.

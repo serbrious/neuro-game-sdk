@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections;
+using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using NeuroSdk.Messages.API;
 using NeuroSdk.Utilities;
@@ -21,7 +22,6 @@ namespace NeuroSdk.Websocket
         public string game = null!;
         public MessageQueue messageQueue = null!;
         public CommandHandler commandHandler = null!;
-        public string websocketUrl = null!;
 
         private void Awake()
         {
@@ -36,13 +36,16 @@ namespace NeuroSdk.Websocket
             Instance = this;
         }
 
-        private IEnumerator Reconnect()
+        private void Start() => StartWs();
+
+        private async UniTask Reconnect()
         {
-            yield return new WaitForSeconds(3);
+            await UniTask.SwitchToMainThread();
+            await UniTask.Delay(TimeSpan.FromSeconds(3));
             StartWs();
         }
 
-        public void StartWs()
+        private void StartWs()
         {
             Debug.LogWarning("Initializing WebSocket connection");
 
@@ -55,19 +58,32 @@ namespace NeuroSdk.Websocket
                 // ignored
             }
 
+            string? websocketUrl = Environment.GetEnvironmentVariable("NEURO_SDK_WS_URL", EnvironmentVariableTarget.Process) ??
+                                   Environment.GetEnvironmentVariable("NEURO_SDK_WS_URL", EnvironmentVariableTarget.User) ??
+                                   Environment.GetEnvironmentVariable("NEURO_SDK_WS_URL", EnvironmentVariableTarget.Machine);
+            if (string.IsNullOrEmpty(websocketUrl))
+            {
+                Debug.LogError("NEURO_SDK_WS_URL environment variable is not set");
+                return;
+            }
+
+            // Websocket callbacks get run on separate threads! Watch out
             _socket = new WebSocket(websocketUrl);
-            _socket.OnMessage += (_, msg) => ReceiveMessage(msg);
+            _socket.OnMessage += (_, msg) =>
+            {
+                ReceiveMessage(msg).Forget();
+            };
             _socket.OnError += (_, e) =>
             {
                 Debug.LogError("Websocket connection has encountered an error!");
                 Debug.LogError(e.Message);
                 Debug.LogError(e.Exception);
-                StartCoroutine(Reconnect());
+                Reconnect().Forget();
             };
             _socket.OnClose += (_, _) =>
             {
                 Debug.LogError("Websocket connection has been closed!");
-                StartCoroutine(Reconnect());
+                Reconnect().Forget();
             };
             _socket.ConnectAsync();
         }
@@ -122,10 +138,12 @@ namespace NeuroSdk.Websocket
             Instance.Send(messageBuilder);
         }
 
-        private void ReceiveMessage(MessageEventArgs msg)
+        private async UniTask ReceiveMessage(MessageEventArgs msg)
         {
             try
             {
+                await UniTask.SwitchToMainThread();
+
                 Debug.Log("Received ws message " + msg.Data);
 
                 JObject message = JObject.Parse(msg.Data);

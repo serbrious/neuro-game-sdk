@@ -15,7 +15,7 @@ namespace NeuroSdk.Websocket
     {
         protected readonly List<IIncomingMessageHandler> Handlers = new();
 
-        public virtual void RegisterAll()
+        public virtual void Start()
         {
             Handlers.AddRange(ReflectionHelpers.GetAllInDomain<IIncomingMessageHandler>(transform));
         }

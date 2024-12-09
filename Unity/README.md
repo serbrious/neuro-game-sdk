@@ -2,6 +2,11 @@
 
 This is the documentation for the Unity version of the Neuro SDK. If you are looking for the general API documentation, look [here](../API/README.md).
 
+> [!Note]  
+> This SDK has been open-sourced as a reference and has not been tested properly yet.  
+> You may encounter issues when using it. If you do, please open an issue.  
+> Proper testing will be done before the game jam starts.
+
 ## Installation
 
 > [!Note]  
@@ -22,16 +27,7 @@ This is the documentation for the Unity version of the Neuro SDK. If you are loo
 
 1. Drag the `NeuroSdk` prefab into whatever scenes you need to use it in. Ideally, it should be added to the first scene that is loaded, like the title screen or main menu. It will move itself into `DontDestroyOnLoad` after, and multiple instances will be automatically destroyed so you don't have to worry about them.
 2. Fill in the `Game` field in the `Websocket Connection` component with the game name.
-
-### For testing:
-
-3. Fill in the `Websocket Url` field with the URL of the websocket server you are running (Randy). It should look like `ws://localhost:8080`.
-4. Enable the `Testing Websocket Starter` component. This component will automatically start the websocket on load.
-
-### For production:
-
-3. From your own script, set the `websocketUrl` field on the `WebsocketConnection` instance to the URL of the websocket server which you grabbed from whatever config you are using.
-4. Invoke the `StartWs` method on the `WebsocketConnection` instance.
+3. Set the `NEURO_SDK_WS_URL` environment variable to the websocket URL you use for testing.
 
 ### Usage
 

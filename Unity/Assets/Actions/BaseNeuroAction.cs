@@ -10,7 +10,7 @@ namespace NeuroSdk.Actions
     {
         private readonly ActionWindow? _window;
 
-        protected BaseNeuroAction(ActionWindow? window = null)
+        protected BaseNeuroAction(ActionWindow? window)
         {
             _window = window;
         }

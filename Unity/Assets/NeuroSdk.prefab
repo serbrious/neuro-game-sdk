@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 3886008500681669405}
   - component: {fileID: 2678616479181197365}
   - component: {fileID: 2966854772918676249}
-  - component: {fileID: 938441733452792041}
   m_Layer: 0
   m_Name: NeuroSdk
   m_TagString: Untagged
@@ -51,7 +50,6 @@ MonoBehaviour:
   game: 
   messageQueue: {fileID: 3886008500681669405}
   commandHandler: {fileID: 2678616479181197365}
-  websocketUrl: ws://localhost:8000
 --- !u!114 &3886008500681669405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,17 +84,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6586905cf4785f847864461401de933b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &938441733452792041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5408655375867258371}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40e82641dc7d4fd9b9eb4a30e01126d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
