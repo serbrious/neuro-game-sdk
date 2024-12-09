@@ -1,4 +1,7 @@
-﻿using NeuroSdk.Utilities;
+﻿using System.Runtime.CompilerServices;
+using NeuroSdk.Utilities;
+
+[assembly: InternalsVisibleTo("NeuroSdk.Examples")]
 
 namespace NeuroSdk
 {
@@ -16,7 +19,7 @@ namespace NeuroSdk
         public static readonly FormatString ActionFailedUnknownAction = "Action failed. Unknown action '{0}'.";
         public static readonly FormatString ActionFailedCaughtException = "Action failed. Caught exception: {0}";
 
-        public const string ActionFailedMissingRequiredParameter = "Action failed. Missing required '{0}' parameter.";
-        public const string ActionFailedInvalidParameter = "Action failed. Invalid '{0}' parameter.";
+        public static readonly FormatString ActionFailedMissingRequiredParameter = "Action failed. Missing required '{0}' parameter.";
+        public static readonly FormatString ActionFailedInvalidParameter = "Action failed. Invalid '{0}' parameter.";
     }
 }
