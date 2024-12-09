@@ -2,10 +2,7 @@
 
 This is the documentation for the Unity version of the Neuro SDK. If you are looking for the general API documentation, look [here](../API/README.md).
 
-> [!Note]  
-> This SDK has been open-sourced as a reference and has not been tested properly yet.  
-> You may encounter issues when using it. If you do, please open an issue.  
-> Proper testing will be done before the game jam starts.
+If you encounter any issues while using this SDK, please open an issue in this repository.
 
 ## Installation
 
