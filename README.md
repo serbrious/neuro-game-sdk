@@ -4,31 +4,46 @@ This repository contains the API documentation for allowing [Neuro-sama](https:/
 
 There are also SDKs available for Unity and Godot. If you would like to use the Neuro API in a different engine or programming language, you will have to implement the websocket protocol yourself. If you do so, consider opening a pull request to this repository to share your implementation with others.
 
+## Contents
+
+### API Documentation
+Please familiarize yourself with the API documentation before using the SDKs. Available at [API](./API/README.md).
+
+### Unity SDK
+Available at [Unity](./Unity/README.md).
+
+### Randy
+Randy is a simple bot that supports the Neuro API. It makes random actions and can be used to test your game. Available at [Randy](./Randy/README.md).
+
+### WIP
+- ~~Unity Mod SDK~~ _(Work in progress)_
+- ~~Godot SDK~~ _(Work in progress)_
+
 ## Information 
 
 The SDKs have been created and optimized for turn-based games, namely Inscryption, Liar's Bar and Buckshot Roulette.
 
-**Due to how the API works, it is extremely unlikely that real-time games will work with it.**
+**Due to how the API works, we do not recommend using them with real-time games.**
 
-Since you need to describe the entire game state in text, and receive actions in text, only games where that is feasible will work with this API.
+Since you need to describe the entire game state in text, and receive actions in text, only games where that is feasible will work well with this API.
 <details>
 <summary>Examples</summary>
 
 - Inscryption? yes
 - Liar's Bar? yes
 - Buckshot Roulette? yes
-- Among Us? no!!!
+- Among Us? not easily
 - Skyrim? no
-- League of Legends? no (thank god)
+- League of Legends? no
 - Celeste? no
-- KTANE? yes i guess
+- KTANE? yes
 - Uno? YES
 - Monopoly? YES
 - Euro Truck Sim? no
 - CSGO? no lol
 - Almost any visual novel ====> YES
 - Almost any card game ====> YES
-- Any RTS ====> vedal said maybe but he has no clue what he's talking about
+- Any RTS ====> not easily
 - Most FPP ====> NO
 - Shooters ====> NO
 - Platformers ====> NO
@@ -39,13 +54,3 @@ You get the idea. Turn based games in general are perfect for this. Anything els
 Vedal said you can use this for more complex games but he told me "you wouldn't get it" so you lot probably wouldn't get it either.
 
 </details>
-
-## Links
-
-Please familiarize yourself with the API documentation before using the SDKs.
-
-- [API Documentation](./API/README.md)
-- [Unity SDK](./Unity/README.md)
-- ~~Unity Mod SDK~~ _(Work in progress)_
-- ~~Godot SDK~~ _(Work in progress)_
-- [Randy](./Randy/README.md)
