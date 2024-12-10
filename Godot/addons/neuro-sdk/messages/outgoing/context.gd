@@ -1,4 +1,4 @@
-﻿class_name Context
+class_name Context
 extends OutgoingMessage
 
 var _message: String
@@ -16,3 +16,6 @@ func _get_data() -> Dictionary:
 		"message": _message,
 		"silent": _silent
 	}
+
+static func send(message: String, silent: bool = false):
+	Websocket.send(Context.new(message, silent))

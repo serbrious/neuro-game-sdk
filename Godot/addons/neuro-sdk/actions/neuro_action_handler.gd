@@ -24,25 +24,24 @@ static func get_action(action_name: String) -> NeuroAction:
 static func is_recently_unregistered(action_name: String) -> bool:
 	return _instance._dying_actions.any(func(action: NeuroAction) -> bool: return action.get_name() == action_name)
 
-static func register_actions(send_to_neuro: bool, actions: Array[NeuroAction]):
+static func register_actions(actions: Array[NeuroAction]):
 	_instance._registered_actions = _instance._registered_actions.filter(func(old_action: NeuroAction) -> bool: return not actions.any(func(new_action: NeuroAction) -> bool: return old_action.get_name() == new_action.get_name()))
 	_instance._dying_actions = _instance._dying_actions.filter(func(old_action: NeuroAction) -> bool: return not actions.any(func(new_action: NeuroAction) -> bool: return old_action.get_name() == new_action.get_name()))
 	_instance._registered_actions.append_array(actions)
-	if send_to_neuro:
-		var array: Array[WsAction] = []
-		array.assign(actions.map(func(action: NeuroAction) -> WsAction: return action.get_ws_action()))
-		Websocket.send(ActionsRegister.new(array))
 
-static func unregister_actions(send_to_neuro: bool, actions: Array[NeuroAction]):
+	var array: Array[WsAction] = []
+	array.assign(actions.map(func(action: NeuroAction) -> WsAction: return action.get_ws_action()))
+	Websocket.send(ActionsRegister.new(array))
+
+static func unregister_actions(actions: Array[NeuroAction]):
 	var actions_to_remove: Array[NeuroAction] = _instance._registered_actions.filter(func(old_action: NeuroAction) -> bool: return actions.any(func(new_action: NeuroAction) -> bool: return old_action.get_name() == new_action.get_name()))
 
 	_instance._registered_actions = _instance._registered_actions.filter(func(old_action: NeuroAction) -> bool: return not actions_to_remove.has(old_action))
 	_instance._dying_actions.append_array(actions_to_remove)
 
-	if send_to_neuro:
-		var array: Array[WsAction] = []
-		array.assign(actions_to_remove.map(func(action: NeuroAction) -> WsAction: return action.get_ws_action()))
-		Websocket.send(ActionsUnregister.new(array))
+	var array: Array[WsAction] = []
+	array.assign(actions_to_remove.map(func(action: NeuroAction) -> WsAction: return action.get_ws_action()))
+	Websocket.send(ActionsUnregister.new(array))
 
 	await _instance.get_tree().create_timer(10).timeout
 	_instance._dying_actions = _instance._dying_actions.filter(func(action: NeuroAction) -> bool: return actions_to_remove.has(action))

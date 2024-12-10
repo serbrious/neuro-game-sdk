@@ -12,12 +12,11 @@ Please familiarize yourself with the API documentation before using the SDKs. Av
 ### Unity SDK
 Available at [Unity](./Unity/README.md).
 
-### Randy
-Randy is a simple bot that supports the Neuro API. It makes random actions and can be used to test your game. Available at [Randy](./Randy/README.md).
+### Godot SDK
+Available at [Godot](./Godot/README.md).
 
-### WIP
-- ~~Unity Mod SDK~~ _(Work in progress)_
-- ~~Godot SDK~~ _(Work in progress)_
+### Randy
+Randy is a simple bot that mimics the Neuro API. It makes random actions and can be used to test your game. Available at [Randy](./Randy/README.md).
 
 ## Information 
 

@@ -66,8 +66,8 @@ func register() -> void:
 		return
 
 	if _context_enabled:
-		Websocket.send(Context.new(_context_message, _context_silent))
-	NeuroActionHandler.register_actions(true, _actions)
+		Context.send(_context_message, _context_silent)
+	NeuroActionHandler.register_actions(_actions)
 
 	_state = State.STATE_REGISTERED
 
@@ -109,7 +109,7 @@ func _send_force() -> void:
 	Websocket.send(ActionsForce.new(_action_force_query, _action_force_state, _action_force_ephemeral_context, array))
 
 func _end() -> void:
-	NeuroActionHandler.unregister_actions(true, _actions)
+	NeuroActionHandler.unregister_actions(_actions)
 	_end_enabled = false
 	_state = State.STATE_ENDED
 	queue_free()

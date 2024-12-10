@@ -8,7 +8,7 @@ const PlayOAction := preload("res://addons/neuro-sdk/examples/play_o_action.gd")
 var _playerTurn := true
 
 func _ready() -> void:
-	Websocket.send(Context.new("A Tic Tac Toe game has started. You are playing as O.", true))
+	Context.send("A Tic Tac Toe game has started. You are playing as O.", true)
 
 	for child in container.get_children():
 		if child is BaseButton:
@@ -23,7 +23,7 @@ func player_play_in_cell(cell: BaseButton) -> void:
 	_playerTurn = false
 
 	(cell.get_child(0) as Control).visible = true
-	Websocket.send(Context.new("Your opponent played an X in the %s cell." % [cell.name], false))
+	Context.send("Your opponent played an X in the %s cell." % [cell.name], false)
 
 	if not check_win():
 		var actionWindow := ActionWindow.new(self)
@@ -45,13 +45,13 @@ func check_win() -> bool:
 	if (check_line(0, 0, 1, 2) || check_line(0, 3, 4, 5) || check_line(0, 6, 7, 8) ||
 		check_line(0, 0, 3, 6) || check_line(0, 1, 4, 7) || check_line(0, 2, 5, 8) ||
 		check_line(0, 0, 4, 8) || check_line(0, 2, 4, 6)):
-		Websocket.send(Context.new("You lost. Better luck next time.", false))
+		Context.send("You lost. Better luck next time.", false)
 		return true
 
 	if (check_line(1, 0, 1, 2) || check_line(1, 3, 4, 5) || check_line(1, 6, 7, 8) ||
 		check_line(1, 0, 3, 6) || check_line(1, 1, 4, 7) || check_line(1, 2, 5, 8) ||
 		check_line(1, 0, 4, 8) || check_line(1, 2, 4, 6)):
-		Websocket.send(Context.new("You won. Congratulations.", false))
+		Context.send("You won. Congratulations.", false)
 		return true
 
 	return false
@@ -72,6 +72,6 @@ func reset_board() -> void:
 			(child.get_child(0) as Control).visible = false
 			(child.get_child(1) as Control).visible = false
 
-	Websocket.send(Context.new("A new Tic Tac Toe game has started. You are playing as O.", true))
+	Context.send("A new Tic Tac Toe game has started. You are playing as O.", true)
 
 	_playerTurn = true

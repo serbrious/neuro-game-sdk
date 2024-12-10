@@ -18,7 +18,7 @@ The `Validate` method should validate the incoming data from json, and make sure
 
 In order to pass state or context between the `Validate` and `ExecuteAsync` methods, you can use the `parsedData` out parameter. This will be passed to the `ExecuteAsync` method when it is called. The type of the `parsedData` parameter is the type parameter of the `NeuroAction<T>` class. If you have no context to pass, you can use the class without the generic type parameter.
 
-The `ExecuteAsync` method should fully perform what Neuro requested. By this point, the action result has already been sent, you need to try your best to execute it.
+The `ExecuteAsync` method should fully perform what Neuro requested. By this point, the action result has already been sent, so you need to try your best to execute it. If it's not possible anymore, you need to fail silently.
 
 ### Code Sample
 
@@ -137,7 +137,7 @@ If you want to add a context message to an action window, you can use the method
 
 ### Forcing
 
-If you want the action window to be forced (i.e. Neuro must perform an action as soon as she can), you can use the of the methods `void ActionWindow.SetForce(...)`. This allows you to pass in various parameters that dictate when the action force for the window should be sent.
+If you want the action window to be forced (i.e. Neuro must perform an action as soon as she can), you can use one of the methods `void ActionWindow.SetForce(...)`. This allows you to pass in various parameters that dictate when the action force for the window should be sent.
 
 ### Ending
 
