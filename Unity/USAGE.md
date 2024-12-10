@@ -104,6 +104,17 @@ public void OnSceneChanged(string sceneName)
     else
         NeuroActionHandler.UnregisterActions("look_at");
 }
+
+// where LookAtAction is defined as
+public class LookAtAction: NeuroAction
+{
+    // This action is never part of an action window, so we pass down null
+    public LookAtAction() : base(null)
+    {
+    }
+
+    // ...
+}
 ```
 
 ## Action Windows
