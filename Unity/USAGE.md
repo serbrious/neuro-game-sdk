@@ -32,7 +32,7 @@ public class JudgeAction : NeuroAction<Button>
     private readonly JudgeGame _judgeGame;
 
     // This action will always be part of an action window, so we pass that as a parameter
-    public JudgeAction(ActionWindow window, JudgeGame _judgeGame) : base(window)
+    public JudgeAction(ActionWindow window, JudgeGame judgeGame) : base(window)
     {
         _judgeGame = judgeGame;
     }
