@@ -22,9 +22,6 @@ The `ExecuteAsync` method should fully perform what Neuro requested. By this poi
 
 ### Code Sample
 
-<details>
-<summary>Click to expand</summary>
-
 ```cs
 // We extend NeuroAction<Button> because the state we pass between validation and execution is a Button object
 public class JudgeAction : NeuroAction<Button>
@@ -67,11 +64,11 @@ public class JudgeAction : NeuroAction<Button>
 
             case null:
                 button = null;
-                return ExecutionResult.Failure(Strings.ActionFailedMissingRequiredParameter.Format("verdict"));
+                return ExecutionResult.Failure("Action failed. Missing required parameter 'verdict'.");
 
             default:
                 button = null;
-                return ExecutionResult.Failure(Strings.ActionFailedInvalidParameter.Format("verdict"));
+                return ExecutionResult.Failure("Action failed. Invalid parameter 'verdict'.");
         }
     }
 
@@ -82,8 +79,6 @@ public class JudgeAction : NeuroAction<Button>
     }
 }
 ```
-
-</details>
 
 ## Registered Actions
 
@@ -98,6 +93,18 @@ There's also `static void NeuroActionHandler.UnregisterActions(string[] actionNa
 > The Neuro API will ignore any attempts at registering an action with the same name as an already registered action, even if the schema or description is different.  
 > The Neuro Unity SDK will always override the existing action with the new one.  
 > This needs to be fixed eventually.
+
+### Code Sample
+
+```cs
+public void OnSceneChanged(string sceneName)
+{
+    if (sceneName == "game")
+        NeuroActionHandler.RegisterActions(new LookAtAction());
+    else
+        NeuroActionHandler.UnregisterActions("look_at");
+}
+```
 
 ## Action Windows
 
@@ -143,9 +150,6 @@ Each action window can register any number of actions, but only one of them will
 
 ### Code Sample
 
-<details>
-<summary>Click to expand</summary>
-
 This code is taken from the Tic Tac Toe example [here](./Assets/Examples/TicTacToe.cs).
 
 ```cs
@@ -167,5 +171,3 @@ public void PlayerPlayInCell(GameObject cell)
     }
 }
 ```
-
-</details>
