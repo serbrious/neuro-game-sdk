@@ -22,7 +22,7 @@ The `_execute_action` function should fully perform what Neuro requested. By thi
 
 ### Code Sample
 
-```gd
+```py
 class_name JudgeAction
 extends NeuroAction
 
@@ -79,7 +79,7 @@ Afterwards, if you want to unregister them, you can call `NeuroActionHandler.unr
 
 ### Code Sample
 
-```gd
+```py
 func _init() -> void:
     NeuroActionHandler.register_actions([LookAtAction.new()])
 
@@ -140,7 +140,7 @@ Each action window can register any number of actions, but only one of them will
 
 This code is taken from the Tic Tac Toe example [here](./addons/neuro-sdk/examples/tic_tac_toe.gd).
 
-```gd
+```py
 func player_play_in_cell(cell: BaseButton) -> void:
     # ...
 
