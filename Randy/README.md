@@ -1,6 +1,9 @@
 # Randy
 
-Randy (full name Random Dot Range) is a simple websocket server designed to mimic Neuro.
+Randy (full name Random Dot Range) is a simple websocket server designed to mimic Neuro. Note that Randy will just pick random actions and will not simulate some behaviors that Neuro could do including:
+- sending actions with invalid data
+- doing registered actions without actions being forced
+- not *immediately* respond to forced actions
 
 You can use Randy to test your local websocket implementations.
 
