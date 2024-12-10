@@ -2,19 +2,15 @@ class_name Websocket
 extends Node
 
 const POLL_INTERVAL := 1.0 / 30.0
-static var game: String
 static var _socket: WebSocketPeer
 static var _message_queue := MessageQueue.new()
 static var _command_handler: CommandHandler
 var _elapsed_time := 0.0
 
-@export var _game: String
-
 func _init() -> void:
-	game = _game
-
 	_command_handler = CommandHandler.new()
 	self.add_child(_command_handler)
+	_command_handler.name = "Command Handler"
 	_command_handler.register_all()
 
 func _ready() -> void:

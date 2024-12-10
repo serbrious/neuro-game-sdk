@@ -18,6 +18,7 @@ func register_all() -> void:
 			var script = load(script_path)
 			if script:
 				var node = script.new()
+				node.name = file_name
 				add_child(node)
 				handlers.append(node)
 				Log.info("Added websocket message node: %s" % [script_path])

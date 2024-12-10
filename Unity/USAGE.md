@@ -20,6 +20,71 @@ In order to pass state or context between the `Validate` and `ExecuteAsync` meth
 
 The `ExecuteAsync` method should fully perform what Neuro requested. By this point, the action result has already been sent, you need to try your best to execute it.
 
+### Code Sample
+
+<details>
+<summary>Click to expand</summary>
+
+```cs
+// We extend NeuroAction<Button> because the state we pass between validation and execution is a Button object
+public class JudgeAction : NeuroAction<Button>
+{
+    private readonly JudgeGame _judgeGame;
+
+    // This action will always be part of an action window, so we pass that as a parameter
+    public JudgeAction(ActionWindow window, JudgeGame _judgeGame) : base(window)
+    {
+        _judgeGame = judgeGame;
+    }
+
+    public override string Name => "judge";
+    protected override string Description => "Decide if the defendant is innocent or guilty.";
+
+    protected override JsonSchema Schema => new()
+    {
+        Type = JsonSchemaType.Object,
+        Required = new List<string> { "verdict" },
+        Properties = new Dictionary<string, JsonSchema>
+        {
+            ["verdict"] = QJS.Enum(new string[] { "innocent", "guilty" })
+        }
+    };
+
+    protected override ExecutionResult Validate(ActionJData actionData, out Button? button)
+    {
+        // Please watch out for nullability - actionData.Data can be null if Neuro sends it like that
+        string? verdict = actionData.Data?["verdict"]?.Value<string>();
+
+        switch (verdict)
+        {
+            case "innocent":
+                button = _judgeGame.InnocentButton;
+                return ExecutionResult.Success();
+
+            case "guilty":
+                button = _judgeGame.GuiltyButton;
+                return ExecutionResult.Success();
+
+            case null:
+                button = null;
+                return ExecutionResult.Failure(Strings.ActionFailedMissingRequiredParameter.Format("verdict"));
+
+            default:
+                button = null;
+                return ExecutionResult.Failure(Strings.ActionFailedInvalidParameter.Format("verdict"));
+        }
+    }
+
+    protected override UniTask ExecuteAsync(Button? button)
+    {
+        Button.Press();
+        return UniTask.CompletedTask;
+    }
+}
+```
+
+</details>
+
 ## Registered Actions
 
 For registering semi-permanent actions, you can use the method `static void NeuroActionHandler.RegisterActions(INeuroAction[] actions)`.
@@ -28,7 +93,7 @@ Afterwards, if you want to unregister them, you can call `static void NeuroActio
 
 There's also `static void NeuroActionHandler.UnregisterActions(string[] actionNames)` which makes more sense I guess, the above function is just for convenience.
 
-> [!Caution]
+> [!Caution]  
 > The Unity SDK currently handles overriding actions with the same name differently than the Neuro API.  
 > The Neuro API will ignore any attempts at registering an action with the same name as an already registered action, even if the schema or description is different.  
 > The Neuro Unity SDK will always override the existing action with the new one.  
@@ -75,3 +140,32 @@ Each action window can register any number of actions, but only one of them will
 > The Neuro API will ignore any attempts at registering an action with the same name as an already registered action, even if the schema or description is different.  
 > The Neuro Unity SDK will always override the existing action with the new one.  
 > This needs to be fixed eventually.
+
+### Code Sample
+
+<details>
+<summary>Click to expand</summary>
+
+This code is taken from the Tic Tac Toe example [here](./Assets/Examples/TicTacToe.cs).
+
+```cs
+public void PlayerPlayInCell(GameObject cell)
+{
+    // ...
+
+    if (!CheckWin())
+    {
+        ActionWindow actionWindow = ActionWindow.Create(gameObject);
+        // 0 seconds forces the action immediately
+        actionWindow.SetForce(0, "It is your turn. Please place an O.", "", false);
+        actionWindow.AddAction(new PlayOAction(actionWindow, this));
+        actionWindow.Register();
+    }
+    else
+    {
+        // ...
+    }
+}
+```
+
+</details>

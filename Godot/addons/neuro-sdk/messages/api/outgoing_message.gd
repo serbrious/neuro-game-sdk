@@ -11,4 +11,4 @@ func merge(_other: OutgoingMessage) -> bool:
 	return false
 
 func get_ws_message() -> WsMessage:
-	return WsMessage.new(_get_command(), _get_data(), Websocket.game)
+	return WsMessage.new(_get_command(), _get_data(), NeuroSdkConfig.game)

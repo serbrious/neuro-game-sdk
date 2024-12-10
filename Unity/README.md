@@ -18,7 +18,7 @@ If you encounter any issues while using this SDK, please open an issue in this r
 ### Manual Installation (if you want to make changes)
 
 1. Install UniTask in your project [(guide)](https://github.com/Cysharp/UniTask?tab=readme-ov-file#install-via-git-url)
-2. Clone or download this repository, then copy the `Unity/Assets` folder into your Unity project's `Assets` or `Packages` folder.
+2. Clone or download this repository, then copy the [`Unity/Assets`](./Assets/) folder into your Unity project's `Assets` or `Packages` folder.
 
 ## Setup
 
