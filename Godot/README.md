@@ -8,7 +8,7 @@ If you encounter any issues while using this SDK, please open an issue in this r
 
 ## Installation
 
-1. Clone or download this repository, then copy the [`Godot/addons`](./addons) folder into your Godot project folder. In your projects
+1. Clone or download this repository, then copy the [`Godot/addons`](./addons) folder into your Godot project folder.
 
 ## Setup
 
