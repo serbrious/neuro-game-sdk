@@ -127,6 +127,10 @@ This message unregisters one or more actions, preventing Neuro from using them a
 
 This message forces Neuro to execute one of the listed actions as soon as possible. Note that this might take a bit if she is already talking.
 
+> [!Important]  
+> Neuro can only handle one action force at a time.  
+> Sending an action force while another one is in progress will cause problems!
+
 ```ts
 {
     "command": "actions/force",
