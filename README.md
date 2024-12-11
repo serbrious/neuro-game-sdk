@@ -2,21 +2,24 @@
 
 This repository contains the API documentation for allowing [Neuro-sama](https://twitch.tv/vedal987) to play games.
 
-There are also SDKs available for Unity and Godot. If you would like to use the Neuro API in a different engine or programming language, you will have to implement the websocket protocol yourself. If you do so, consider opening a pull request to this repository to share your implementation with others.
+There are also official SDKs available for Unity and Godot, as well as community-maintained SDKs. If you would like to use the Neuro API in a different engine or programming language, you will have to implement the websocket protocol yourself. If you do so, consider opening a pull request to this repository to share your implementation with others by adding a link to the README.
 
 ## Contents
 
 ### API Documentation
-Please familiarize yourself with the API documentation before using the SDKs. Available at [API](./API/README.md).
+Please familiarize yourself with the [API documentation](./API/README.md) before using the SDKs.
 
-### Unity SDK
-Available at [Unity](./Unity/README.md).
+### Official SDKs
+SDKs created and maintained by Alex, which are located in this repository. Pull requests are welcome.
+- [Unity SDK](./Unity/README.md)
+- [Godot SDK](./Godot/README.md)
 
-### Godot SDK
-Available at [Godot](./Godot/README.md).
+### Community-Maintained SDKs
+Third-party SDKs created and maintained by the community.
+- [Rust SDK](https://github.com/chayleaf/rust-neuro-sama-game-api)
 
 ### Randy
-Randy is a simple bot that mimics the Neuro API. It makes random actions and can be used to test your game. Available at [Randy](./Randy/README.md).
+[Randy](./Randy/README.md) is a simple bot that mimics the Neuro API. It makes random actions and can be used to test your integration.
 
 ## Information 
 
