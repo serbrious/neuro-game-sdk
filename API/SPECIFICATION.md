@@ -178,19 +178,6 @@ This message needs to be sent as soon as possible after an action is validated, 
 
 ## Incoming Messages (S2C, Neuro to Game)
 
-<!-- This is not implemented by Vedal yet
-### Reregister All Actions
-
-If there is a problem mid-game and Neuro crashes, upon reconnection this message might be sent in order to reregister all actions that were previously registered.
-
-```ts
-{
-    "command": "actions/reregister_all"
-}
-```
-
--->
-
 ### Action
 
 This message is sent by Neuro when she tries to execute an action. You should respond to it with an action result as soon as possible.
@@ -215,31 +202,10 @@ This message is sent by Neuro when she tries to execute an action. You should re
 > The `data` parameter comes directly from Neuro, so there is a chance it might be malformed, contain invalid JSON, or not match the provided schema exactly.  
 > You are responsible for validating the JSON and returning an unsuccessful action result if it is invalid.
 
+## API Proposals
 
-<!-- Graceful shutdown API (not implemented yet)
+There are some message types that have been proposed but have not yet been implemented in the API.
 
-/*Neuro->Mod*/ {
-    "command": "shutdown/graceful",
-    "data": {
-        "wants_shutdown": boolean
-    }
-}
+If you are writing an SDK, you do not need to implement them, but this should offer a good overview at what might be added in the future.
 
-/*Neuro->Mod*/ {
-    "command": "shutdown/immediate"
-}
-
-/*Mod->Neuro*/ {
-    "command": "shutdown",
-    "game": string
-}
-
--->
-
-<!-- Used for buckshot and liars bar
-
-/*Neuro->Mod*/ {
-    "command": "game/leave_lobby"
-}
-
--->
+If you are interested, you can find more information in the [`PROPOSALS.md`](./PROPOSALS.md) file.
