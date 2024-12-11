@@ -2,6 +2,8 @@
 
 This is the documentation for the Godot version of the Neuro SDK. If you are looking for the general API documentation, look [here](../API/README.md).
 
+This SDK has been built for and tested with Godot 4.1, but later versions of Godot 4 should also work.
+
 If you encounter any issues while using this SDK, please open an issue in this repository.
 
 ## Installation
