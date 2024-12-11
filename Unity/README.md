@@ -2,6 +2,8 @@
 
 This is the documentation for the Unity version of the Neuro SDK. If you are looking for the general API documentation, look [here](../API/README.md).
 
+This SDK has been built for and tested with Unity 2022.3, but other versions will probably work as well.
+
 If you encounter any issues while using this SDK, please open an issue in this repository.
 
 ## Installation
