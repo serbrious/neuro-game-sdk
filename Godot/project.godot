@@ -17,8 +17,12 @@ boot_splash/bg_color=Color(0, 0, 0, 1)
 
 [autoload]
 
-NeuroSdk="res://addons/neuro-sdk/neuro_sdk.tscn"
+NeuroSdk="*res://addons/neuro-sdk/neuro_sdk.tscn"
 
 [debug]
 
 file_logging/enable_file_logging=true
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/neuro-sdk/plugin.cfg")
