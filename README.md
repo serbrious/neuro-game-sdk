@@ -18,6 +18,7 @@ SDKs created and maintained by Alex, which are located in this repository. Pull 
 Third-party SDKs created and maintained by the community.
 - [Rust SDK](https://github.com/chayleaf/rust-neuro-sama-game-api)
 - [JavaScript/TypeScript SDK](https://github.com/AriesAlex/typescript-neuro-game-sdk)
+- [Java SDK](https://github.com/alexcrea/jacn-sdk)
 
 ### Randy
 [Randy](./Randy/README.md) is a simple bot that mimics the Neuro API. It makes random actions and can be used to test your integration.
