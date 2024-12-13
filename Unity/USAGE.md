@@ -182,3 +182,44 @@ public void PlayerPlayInCell(GameObject cell)
     }
 }
 ```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+box rgba(255,0,0,0.1) Server
+	participant API as Neuro API
+end
+box rgba(0,255,0,0.1) Client
+	participant SDK as Neuro SDK
+    participant Game
+end
+Game ->> SDK: ActionWindow.SetForce(...)<br>ActionWindow.Register()
+SDK ->> API: actions/register
+opt If forced
+    SDK ->> API: actions/force
+end
+API ->> SDK: action
+activate API
+SDK ->> Game: NeuroAction.Validate(...)
+alt Success
+    Game ->> SDK: return ExecutionResult.Success(...)
+    SDK ->> API: actions/unregister
+    SDK ->> API: action/result
+    deactivate API
+    SDK ->> Game: NeuroAction.ExecuteAsync(...)
+else Failure
+    activate API
+    Game ->> SDK: return ExecutionResult.Failure(...)
+    SDK ->> API: action/result
+    deactivate API
+    opt If forced
+        Note over API: The API is responsible for retrying<br>failed action forces, but this is a<br>problem and will likely be changed<br>in the future. See issue #35;14.
+        API ->> SDK: action
+        activate API
+        SDK ->> Game: NeuroAction.Validate
+        Note over API, Game: Repeats as necessary
+        deactivate API
+    end
+end
+```
