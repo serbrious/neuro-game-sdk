@@ -58,11 +58,11 @@ func add_action(action: NeuroAction) -> void:
 
 func register() -> void:
 	if _state != State.STATE_BUILDING:
-		Log.error("Cannot register an ActionWindow more than once.")
+		push_error("Cannot register an ActionWindow more than once.")
 		return
 
 	if _actions.size() == 0:
-		Log.error("Cannot register an ActionWindow with no actions.")
+		push_error("Cannot register an ActionWindow with no actions.")
 		return
 
 	if _context_enabled:
@@ -73,9 +73,9 @@ func register() -> void:
 
 func result(execution_result: ExecutionResult) -> ExecutionResult:
 	if _state == State.STATE_BUILDING:
-		Log.error("Cannot handle a result before registering.")
+		push_error("Cannot handle a result before registering.")
 	elif _state == State.STATE_ENDED:
-		Log.error("Cannot handle a result after the ActionWindow has ended.")
+		push_error("Cannot handle a result after the ActionWindow has ended.")
 	elif execution_result.successful:
 		_end()
 	elif _state == State.STATE_FORCED:
@@ -85,7 +85,7 @@ func result(execution_result: ExecutionResult) -> ExecutionResult:
 
 func _validate_frozen() -> bool:
 	if _state != State.STATE_BUILDING:
-		Log.error("Tried to mutate action after it was registered")
+		push_error("Tried to mutate action after it was registered")
 		return false
 	return true
 

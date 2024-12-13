@@ -7,7 +7,7 @@ var handlers: Array[IncomingMessage] = []
 func register_all() -> void:
 	var dir := DirAccess.open(INCOMING_MESSAGES_FOLDER)
 	if not dir:
-		Log.error("Could not open websocket messages directory")
+		push_error("Could not open websocket messages directory")
 		return
 
 	dir.list_dir_begin()
@@ -21,7 +21,7 @@ func register_all() -> void:
 				node.name = file_name
 				add_child(node)
 				handlers.append(node)
-				Log.info("Added websocket message node: %s" % [script_path])
+				print("Added websocket message node: %s" % [script_path])
 		file_name = dir.get_next()
 	dir.list_dir_end()
 
@@ -34,8 +34,8 @@ func handle(command: String, data: IncomingData) -> void:
 
 		var validation_result := handler.validate(command, data, state)
 		if !validation_result.successful:
-			Log.warning("Received unsuccessful execution result when handling a message")
-			Log.warning(validation_result.message)
+			push_warning("Received unsuccessful execution result when handling a message")
+			push_warning(validation_result.message)
 
 		handler.report_result(state, validation_result)
 

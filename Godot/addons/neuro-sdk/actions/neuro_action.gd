@@ -23,23 +23,23 @@ func get_ws_action() -> WsAction:
 	return WsAction.new(_get_name(), _get_description(), _get_schema())
 
 func _get_name() -> String:
-	Log.error("Action._get_name() is not implemented.")
+	push_error("Action._get_name() is not implemented.")
 	return ""
 
 func _get_description() -> String:
-	Log.error("Action._get_description() is not implemented.")
+	push_error("Action._get_description() is not implemented.")
 	return ""
 
 func _get_schema() -> Dictionary:
-	Log.error("Action._get_schema() is not implemented.")
+	push_error("Action._get_schema() is not implemented.")
 	return {}
 
 func _can_be_used() -> bool:
 	return true
 
 func _validate_action(_data: IncomingData, _state: Dictionary) -> ExecutionResult:
-	Log.error("Action._validate_action() is not implemented.")
+	push_error("Action._validate_action() is not implemented.")
 	return ExecutionResult.mod_failure("Action._validate_action() is not implemented.")
 
 func _execute_action(_state: Dictionary) -> void:
-	Log.error("Action._execute_action() is not implemented.")
+	push_error("Action._execute_action() is not implemented.")
