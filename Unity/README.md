@@ -34,8 +34,8 @@ If you encounter any issues while using this SDK, please open an issue in this r
 
 1. Go to `Project Settings > Player` and set `Compression Format` to `Gzip` and enable `Decompression Fallback`.
 2. Do one of the following:
-2a. Bundle your build along with a web server that can query the `NEURO_SDK_WS_URL` environment variable via a GET request to `/$env/NEURO_SDK_WS_URL` [(Superbox's Web Bundler)](https://discord.com/channels/574720535888396288/1316605675631022192/1317153897340735581)
-2b. Access your web server with the `WebSocketURL` URL parameter (ex. `http://localhost:8080?WebSocketURL=ws://localhost:8000`)
+    1. Bundle your build along with a web server that can query the `NEURO_SDK_WS_URL` environment variable via a GET request to `/$env/NEURO_SDK_WS_URL` [(Superbox's Web Bundler)](https://discord.com/channels/574720535888396288/1316605675631022192/1317153897340735581)
+    2. Access your web server with the `WebSocketURL` URL parameter (ex. `http://localhost:8080?WebSocketURL=ws://localhost:8000`)
 
 ### Usage
 
