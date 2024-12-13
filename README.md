@@ -9,22 +9,28 @@ There are also official SDKs available for Unity and Godot, as well as community
 ### API Documentation
 Please familiarize yourself with the [API documentation](./API/README.md) before using the SDKs.
 
-### Official SDKs
+### SDKs
 SDKs created and maintained by Alex, which are located in this repository. Pull requests are welcome.
 - [Unity SDK](./Unity/README.md)
 - [Godot SDK](./Godot/README.md)
 
-### Community-Maintained SDKs
+### Tools
+- [Randy](./Randy/README.md) is a simple bot that mimics the Neuro API. It makes random actions and can be used to test your integration.
+
+## Community-Maintained
+
+### SDKs
 Third-party SDKs created and maintained by the community.
 - [Rust SDK](https://github.com/chayleaf/rust-neuro-sama-game-api)
 - [JavaScript/TypeScript SDK](https://github.com/AriesAlex/typescript-neuro-game-sdk)
+- [Java SDK](https://github.com/alexcrea/jacn-sdk)
 
-### Randy
-[Randy](./Randy/README.md) is a simple bot that mimics the Neuro API. It makes random actions and can be used to test your integration.
+### Tools
+- [Neuro API Human Control](https://github.com/Pasu4/neuro-api-human-control) is a graphical testing interface, similar to Randy, but it allows the user to write messages manually.
 
 ## Information 
 
-The SDKs have been created and optimized for turn-based games, namely Inscryption, Liar's Bar and Buckshot Roulette.
+The official SDKs have been created and optimized for turn-based games, namely Inscryption, Liar's Bar and Buckshot Roulette.
 
 **Due to how the API works, we do not recommend using them with real-time games.**
 
@@ -37,13 +43,13 @@ Since you need to describe the entire game state in text, and receive actions in
 - Buckshot Roulette? yes
 - Among Us? not easily
 - Skyrim? no
-- League of Legends? no
+- League of Legends? no (ew)
 - Celeste? no
 - KTANE? yes
 - Uno? YES
 - Monopoly? YES
 - Euro Truck Sim? no
-- CSGO? no lol
+- CSGO? no
 - Almost any visual novel ====> YES
 - Almost any card game ====> YES
 - Any RTS ====> not easily

@@ -10,8 +10,8 @@ You can use Randy to test your local websocket implementations.
 ## Installation
 
 1. Clone or download this repository
-2. Run `npm install`
-3. Run `npm start`
+2. Run `npm install` in the `Randy` folder
+3. Run `npm start` in the `Randy` folder
 
 ## Usage
 

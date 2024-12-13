@@ -153,3 +153,44 @@ func player_play_in_cell(cell: BaseButton) -> void:
     else:
         # ...
 ```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+box rgba(255,0,0,0.1) Server
+	participant API as Neuro API
+end
+box rgba(0,255,0,0.1) Client
+	participant SDK as Neuro SDK
+    participant Game
+end
+Game ->> SDK: ActionWindow.set_force(...)<br>ActionWindow.register()
+SDK ->> API: actions/register
+opt If forced
+    SDK ->> API: actions/force
+end
+API ->> SDK: action
+activate API
+SDK ->> Game: NeuroAction._validate_action(...)
+alt Success
+    Game ->> SDK: return ExecutionResult.success(...)
+    SDK ->> API: actions/unregister
+    SDK ->> API: action/result
+    deactivate API
+    SDK ->> Game: NeuroAction._execute_action(...)
+else Failure
+    activate API
+    Game ->> SDK: return ExecutionResult.failure(...)
+    SDK ->> API: action/result
+    deactivate API
+    opt If forced
+        Note over API: The API is responsible for retrying<br>failed action forces, but this is a<br>problem and will likely be changed<br>in the future. See issue #35;14.
+        API ->> SDK: action
+        activate API
+        SDK ->> Game: NeuroAction._validate_action(...)
+        Note over API, Game: Repeats as necessary
+        deactivate API
+    end
+end
+```
