@@ -1,16 +1,21 @@
 class_name Log
 
+
 static func debug(message: String):
-	print(message)
+	print_debug(message)
+
 
 static func info(message: String):
 	print(message)
 
+
 static func warning(message: String):
-	print(message)
+	push_warning(message)
+
 
 static func error(message: String):
-	printerr(message)
+	push_error(message )
+
 
 static func fatal(message: String):
-	printerr(message)
+	assert(false, message)

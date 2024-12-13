@@ -7,7 +7,7 @@ func can_handle(command: String) -> bool:
 func validate(command: String, message_data: IncomingData, state: Dictionary) -> ExecutionResult:
 	var result := _validate(command, message_data, state)
 	if result == null:
-		Log.error("IncomingMessage._validate() returned null. An error probably occurred.")
+		push_error("IncomingMessage._validate() returned null. An error probably occurred.")
 		return ExecutionResult.mod_failure(Strings.action_failed_error)
 
 	return result
@@ -19,15 +19,15 @@ func execute(state: Dictionary) -> void:
 	_execute(state)
 
 func _can_handle(_command: String) -> bool:
-	Log.error("IncomingMessage._can_handle() is not implemented.")
+	push_error("IncomingMessage._can_handle() is not implemented.")
 	return false
 
 func _validate(_command: String, _data: IncomingData, _state: Dictionary) -> ExecutionResult:
-	Log.error("IncomingMessage._validate() is not implemented.")
+	push_error("IncomingMessage._validate() is not implemented.")
 	return ExecutionResult.mod_failure("IncomingMessage.validate() is not implemented.")
 
 func _report_result(_state: Dictionary, _result: ExecutionResult) -> void:
-	Log.error("IncomingMessage._report_result() is not implemented.")
+	push_error("IncomingMessage._report_result() is not implemented.")
 
 func _execute(_state: Dictionary) -> void:
-	Log.error("IncomingMessage._execute() is not implemented.")
+	push_error("IncomingMessage._execute() is not implemented.")
