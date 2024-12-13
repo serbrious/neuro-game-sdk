@@ -80,6 +80,12 @@ namespace NeuroSdk.Examples
                 return true;
             }
 
+            if (transform.Cast<Transform>().Take(9).All(c => c.GetChild(0).gameObject.activeSelf || c.GetChild(1).gameObject.activeSelf))
+            {
+                Context.Send("It's a tie. No one won.", false);
+                return true;
+            }
+
             return false;
         }
 

@@ -54,6 +54,10 @@ func check_win() -> bool:
 		Context.send("You won. Congratulations.", false)
 		return true
 
+	if container.get_children().all(func(c: Node) -> bool: return (c.get_child(0) as Control).visible or (c.get_child(1) as Control).visible):
+		Context.send("It's a tie. No one won.", false)
+		return true
+
 	return false
 
 func check_line(player: int, c1: int, c2: int, c3: int) -> bool:
