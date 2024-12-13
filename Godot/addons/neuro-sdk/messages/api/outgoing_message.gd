@@ -1,7 +1,7 @@
 class_name OutgoingMessage
 
 func _get_command() -> String:
-	Log.error("OutgoingMessage._get_command() is not implemented.")
+	push_error("OutgoingMessage._get_command() is not implemented.")
 	return "invalid"
 
 func _get_data() -> Dictionary:

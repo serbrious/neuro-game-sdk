@@ -34,11 +34,11 @@ func _process(delta) -> void:
 			_ws_write()
 		WebSocketPeer.STATE_CLOSED:
 			var code: int = _socket.get_close_code()
-			Log.warning("Websocket closed with code: %d" % [code])
+			push_warning("Websocket closed with code: %d" % [code])
 			_ws_reconnect()
 
 func _ws_start() -> void:
-	Log.warning("Initializing Websocket connection")
+	push_warning("Initializing Websocket connection")
 
 	if _socket != null:
 		var state: int = _socket.get_ready_state();
@@ -47,13 +47,13 @@ func _ws_start() -> void:
 
 	var ws_url := OS.get_environment("NEURO_SDK_WS_URL")
 	if not ws_url:
-		Log.error("NEURO_SDK_WS_URL environment variable is not set")
+		push_error("NEURO_SDK_WS_URL environment variable is not set")
 		return
 
 	_socket = WebSocketPeer.new() # idk if i can reuse the same one
 	var err: int = _socket.connect_to_url(ws_url)
 	if err != OK:
-		Log.warning("Could not connect to websocket, error code %d" % [err])
+		push_warning("Could not connect to websocket, error code %d" % [err])
 		_ws_reconnect()
 
 func _ws_reconnect() -> void:
@@ -67,19 +67,19 @@ func _ws_read() -> void:
 		var json: JSON = JSON.new()
 		var error: int = json.parse(messageStr)
 		if error != OK:
-			Log.error("Could not parse websocket message: %s" % [messageStr])
-			Log.error("JSON Parse Error: %s at line %d" % [json.get_error_message(), json.get_error_line()])
+			push_error("Could not parse websocket message: %s" % [messageStr])
+			push_error("JSON Parse Error: %s at line %d" % [json.get_error_message(), json.get_error_line()])
 			continue
 
 		if typeof(json.data) != TYPE_DICTIONARY:
-			Log.error("Websocket message is not a dictionary: %s" % [messageStr])
+			push_error("Websocket message is not a dictionary: %s" % [messageStr])
 			continue
 
 		var message = IncomingData.new(json.data)
 
 		var command = message.get_string("command")
 		if not command:
-			Log.error("Websocket message does not have a command: %s" % [messageStr])
+			push_error("Websocket message does not have a command: %s" % [messageStr])
 			continue
 
 		var data := message.get_object("data", {})
@@ -95,7 +95,7 @@ static func send(message: OutgoingMessage) -> void:
 
 static func send_immediate(message: OutgoingMessage) -> void:
 	if _socket == null or _socket.get_ready_state() != WebSocketPeer.STATE_OPEN:
-		Log.error("Cannot send immediate message, websocket is not connected")
+		push_error("Cannot send immediate message, websocket is not connected")
 		return
 	_send_internal(message.get_ws_message())
 
@@ -104,5 +104,5 @@ static func _send_internal(message: WsMessage) -> void:
 
 	var err: int = _socket.send_text(messageStr)
 	if err != OK:
-		Log.error("Could not send message: %s" % [message])
-		Log.error("Error code: %d" % [err])
+		push_error("Could not send message: %s" % [message])
+		push_error("Error code: %d" % [err])

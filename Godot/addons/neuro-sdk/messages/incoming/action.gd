@@ -34,7 +34,7 @@ func _validate(_command: String, message_data: IncomingData, state: Dictionary) 
 		return ExecutionResult.failure(Strings.action_failed_invalid_json)
 
 	if typeof(json.data) != TYPE_DICTIONARY:
-		Log.error("Action data can only be a dictionary. Other respones are not permitted for the API implementation in Godot.")
+		push_error("Action data can only be a dictionary. Other respones are not permitted for the API implementation in Godot.")
 		return ExecutionResult.failure(Strings.action_failed_invalid_json)
 
 	var action_data := IncomingData.new(json.data)
@@ -45,7 +45,7 @@ func _validate(_command: String, message_data: IncomingData, state: Dictionary) 
 func _report_result(state: Dictionary, result: ExecutionResult) -> void:
 	var id = state.get("_action_id", null);
 	if id == null:
-		Log.error("Action.report_result received no action id. It probably could not be parsed in the action. Received result: %s" % [result.message])
+		push_error("Action.report_result received no action id. It probably could not be parsed in the action. Received result: %s" % [result.message])
 		return
 
 	Websocket.send(ActionResult.new(id, result))
