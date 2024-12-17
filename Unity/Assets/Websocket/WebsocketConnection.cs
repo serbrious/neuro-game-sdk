@@ -83,7 +83,7 @@ namespace NeuroSdk.Websocket
                 try
                 {
                     Uri uri = new(Application.absoluteURL);
-                    string requestUrl = $"{uri.Scheme}://{uri.Host}/$env/NEURO_SDK_WS_URL";
+                    string requestUrl = $"{uri.Scheme}://{uri.Host}:{uri.Port}/$env/NEURO_SDK_WS_URL";
                     UnityWebRequest request = UnityWebRequest.Get(requestUrl);
 
                     await request.SendWebRequest();
