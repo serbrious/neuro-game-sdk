@@ -1,20 +1,15 @@
 ﻿#nullable enable
 
 using System;
-using System.Collections;
+using System.Text;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
+using NativeWebSocket;
 using NeuroSdk.Messages.API;
 using NeuroSdk.Utilities;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
-#if UNITY_WEBGL && !UNITY_EDITOR
-using NativeWebSocket;
-using System.Linq;
 using UnityEngine.Networking;
-#else
-using WebSocketSharp;
-#endif
 
 namespace NeuroSdk.Websocket
 {
@@ -42,30 +37,22 @@ namespace NeuroSdk.Websocket
             Instance = this;
         }
 
-        private void Start() => StartWs();
+        private void Start() => StartWs().Forget();
 
         private async UniTask Reconnect()
         {
             await UniTask.SwitchToMainThread();
             await UniTask.Delay(TimeSpan.FromSeconds(3));
-            StartWs();
+            await StartWs();
         }
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-        private async void StartWs()
-#else
-        private void StartWs()
-#endif
+        private async UniTask StartWs()
         {
             Debug.LogWarning("Initializing WebSocket connection");
 
             try
             {
-#if UNITY_WEBGL && !UNITY_EDITOR
                 if (_socket?.State is WebSocketState.Open or WebSocketState.Connecting) await _socket.Close();
-#else
-                if (_socket?.ReadyState is WebSocketState.Open or WebSocketState.Connecting) _socket.Close();
-#endif
             }
             catch
             {
@@ -74,33 +61,33 @@ namespace NeuroSdk.Websocket
 
             string? websocketUrl = null;
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-            if (Application.absoluteURL.IndexOf("?") != -1)
+            if (Application.absoluteURL.IndexOf("?", StringComparison.Ordinal) != -1)
             {
-                string[] tempStr = Application.absoluteURL.Split('?')[1].Split("WebSocketURL=");
-                if (tempStr.Length > 1)
+                string[] urlSplits = Application.absoluteURL.Split('?');
+                if (urlSplits.Length > 1)
                 {
-                    string? urlParameter = tempStr[1].Split('&')[0];
-                    if (!string.IsNullOrEmpty(urlParameter))
+                    string[] urlParamSplits = urlSplits[1].Split("WebSocketURL=");
+                    if (urlParamSplits.Length > 1)
                     {
-                        websocketUrl = urlParameter;
+                        string? param = urlParamSplits[1].Split('&')[0];
+                        if (!string.IsNullOrEmpty(param))
+                        {
+                            websocketUrl = param;
+                        }
                     }
                 }
             }
 
             if (string.IsNullOrEmpty(websocketUrl))
             {
-                string[] urlParts = Application.absoluteURL.Split(':');
-                string baseUrl = urlParts[0];
-                if (urlParts.Length > 1)
-                    baseUrl += ":" + new string(urlParts[1].SkipWhile(c => !char.IsDigit(c)).TakeWhile(c => char.IsDigit(c)).ToArray());
-
-                UnityWebRequest request = UnityWebRequest.Get($"{baseUrl}/$env/NEURO_SDK_WS_URL");
                 try
                 {
+                    Uri uri = new(Application.absoluteURL);
+                    string requestUrl = $"{uri.Scheme}://{uri.Host}/$env/NEURO_SDK_WS_URL";
+                    UnityWebRequest request = UnityWebRequest.Get(requestUrl);
+
                     await request.SendWebRequest();
-                    if (request.result == UnityWebRequest.Result.Success)
-                        websocketUrl = request.downloadHandler.text;
+                    if (request.result == UnityWebRequest.Result.Success) websocketUrl = request.downloadHandler.text;
                 }
                 catch
                 {
@@ -108,35 +95,37 @@ namespace NeuroSdk.Websocket
                 }
             }
 
-            if (!string.IsNullOrEmpty(websocketUrl))
-            {
-                Environment.SetEnvironmentVariable("NEURO_SDK_WS_URL", websocketUrl, EnvironmentVariableTarget.Process);
-            }
-#endif
-
-            websocketUrl = Environment.GetEnvironmentVariable("NEURO_SDK_WS_URL", EnvironmentVariableTarget.Process) ??
-                       Environment.GetEnvironmentVariable("NEURO_SDK_WS_URL", EnvironmentVariableTarget.User) ??
-                       Environment.GetEnvironmentVariable("NEURO_SDK_WS_URL", EnvironmentVariableTarget.Machine);
             if (string.IsNullOrEmpty(websocketUrl))
             {
-                Debug.LogError("NEURO_SDK_WS_URL environment variable is not set");
+                websocketUrl = Environment.GetEnvironmentVariable("NEURO_SDK_WS_URL", EnvironmentVariableTarget.Process) ??
+                               Environment.GetEnvironmentVariable("NEURO_SDK_WS_URL", EnvironmentVariableTarget.User) ??
+                               Environment.GetEnvironmentVariable("NEURO_SDK_WS_URL", EnvironmentVariableTarget.Machine);
+            }
+
+            if (string.IsNullOrEmpty(websocketUrl))
+            {
+                string errMessage = "Could not retrieve websocket URL.";
+#if UNITY_EDITOR || !UNITY_WEBGL
+                errMessage += " You should set the NEURO_SDK_WS_URL environment variable.";
+#endif
+#if UNITY_WEBGL
+                errMessage += " You need to specify a WebSocketURL query parameter in the URL or open a local server that serves the NEURO_SDK_WS_URL environment variable. See the documentation for more information.";
+#endif
+                Debug.LogError(errMessage);
                 return;
             }
 
-            // Websocket callbacks get run on separate threads! Watch out
-#if UNITY_WEBGL && !UNITY_EDITOR
+            // Websocket callbacks probably get run on separate threads! Watch out
             _socket = new WebSocket(websocketUrl);
             _socket.OnMessage += (bytes) =>
             {
-                Debug.LogWarning(bytes);
-                string msg = System.Text.Encoding.UTF8.GetString(bytes);
-                Debug.LogWarning(msg);
-                ReceiveMessage(msg).Forget();
+                string message = Encoding.UTF8.GetString(bytes);
+                ReceiveMessage(message).Forget();
             };
-            _socket.OnError += (e) =>
+            _socket.OnError += (error) =>
             {
                 Debug.LogError("Websocket connection has encountered an error!");
-                Debug.LogError(e);
+                Debug.LogError(error);
                 Reconnect().Forget();
             };
             _socket.OnClose += (_) =>
@@ -144,66 +133,48 @@ namespace NeuroSdk.Websocket
                 Debug.LogError("Websocket connection has been closed!");
                 Reconnect().Forget();
             };
-            _ = _socket.Connect();
-#else
-            _socket = new WebSocket(websocketUrl);
-            _socket.OnMessage += (_, msg) =>
-            {
-                ReceiveMessage(msg).Forget();
-            };
-            _socket.OnError += (_, e) =>
-            {
-                Debug.LogError("Websocket connection has encountered an error!");
-                Debug.LogError(e.Message);
-                Debug.LogError(e.Exception);
-                Reconnect().Forget();
-            };
-            _socket.OnClose += (_, _) =>
-            {
-                Debug.LogError("Websocket connection has been closed!");
-                Reconnect().Forget();
-            };
-            _socket.ConnectAsync();
-#endif
+            await _socket.Connect();
         }
 
         private void Update()
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
             if (_socket?.State is not WebSocketState.Open) return;
-#else
-            if (_socket?.ReadyState is not WebSocketState.Open) return;
-#endif
 
             while (messageQueue.Count > 0)
             {
                 OutgoingMessageBuilder builder = messageQueue.Dequeue()!;
-                string message = Jason.Serialize(builder.GetWsMessage());
+                SendTask(builder).Forget();
+            }
 
-                Debug.Log($"Sending ws message {message}");
+#if !UNITY_WEBGL || UNITY_EDITOR
+            _socket.DispatchMessageQueue();
+#endif
+        }
 
-                SendAsyncMessage(message, success =>
-                {
-                    if (!success)
-                    {
-                        Debug.LogError($"Failed to send ws message {message}");
-                        messageQueue.Enqueue(builder);
-                    }
-                });
+        private async UniTask SendTask(OutgoingMessageBuilder builder)
+        {
+            string message = Jason.Serialize(builder.GetWsMessage());
+
+            Debug.Log($"Sending ws message {message}");
+
+            try
+            {
+                await _socket!.SendText(message);
+            }
+            catch
+            {
+                Debug.LogError($"Failed to send ws message {message}");
+                messageQueue.Enqueue(builder);
             }
         }
 
         public void Send(OutgoingMessageBuilder messageBuilder) => messageQueue.Enqueue(messageBuilder);
 
-        public static void SendImmediate(OutgoingMessageBuilder messageBuilder)
+        public void SendImmediate(OutgoingMessageBuilder messageBuilder)
         {
             string message = Jason.Serialize(messageBuilder.GetWsMessage());
 
-#if UNITY_WEBGL && !UNITY_EDITOR
             if (_socket?.State is not WebSocketState.Open)
-#else
-            if (_socket?.ReadyState is not WebSocketState.Open)
-#endif
             {
                 Debug.LogError($"WS not open - failed to send immediate ws message {message}");
                 return;
@@ -211,7 +182,7 @@ namespace NeuroSdk.Websocket
 
             Debug.Log($"Sending immediate ws message {message}");
 
-            SendImmediateMessage(message);
+            _socket.SendText(message);
         }
 
         public static void TrySend(OutgoingMessageBuilder messageBuilder)
@@ -225,7 +196,17 @@ namespace NeuroSdk.Websocket
             Instance.Send(messageBuilder);
         }
 
-#if UNITY_WEBGL && !UNITY_EDITOR
+        public static void TrySendImmediate(OutgoingMessageBuilder messageBuilder)
+        {
+            if (Instance == null)
+            {
+                Debug.LogError("Cannot send immediate message - WebsocketConnection instance is null");
+                return;
+            }
+
+            Instance.SendImmediate(messageBuilder);
+        }
+
         private async UniTask ReceiveMessage(string msgData)
         {
             try
@@ -251,66 +232,6 @@ namespace NeuroSdk.Websocket
                 Debug.LogError("Received invalid message");
                 Debug.LogError(e);
             }
-        }
-#else
-        private async UniTask ReceiveMessage(MessageEventArgs msg)
-        {
-            try
-            {
-                await UniTask.SwitchToMainThread();
-
-                Debug.Log("Received ws message " + msg.Data);
-
-                JObject message = JObject.Parse(msg.Data);
-                string? command = message["command"]?.Value<string>();
-                MessageJData data = new(message["data"]);
-
-                if (command == null)
-                {
-                    Debug.LogError("Received command that could not be deserialized. What the fuck are you doing?");
-                    return;
-                }
-
-                commandHandler.Handle(command, data);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Received invalid message");
-                Debug.LogError(e);
-            }
-        }
-#endif
-
-        private static void SendImmediateMessage(string message)
-        {
-#if UNITY_WEBGL && !UNITY_EDITOR
-            SendAsyncMessage(message, success => { });
-#else
-            _socket?.Send(message);
-#endif
-        }
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-        private static async void SendAsyncMessage(string message, Action<bool> callback)
-#else
-        private static void SendAsyncMessage(string message, Action<bool> callback)
-#endif
-        {
-            if (_socket == null) return;
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-            try
-            {
-                await _socket.SendText(message);
-                callback(true);
-            }
-            catch
-            {
-                callback(false);
-            }
-#else
-            _socket.SendAsync(message, callback);
-#endif
         }
     }
 }

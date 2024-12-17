@@ -9,6 +9,7 @@
     "com.cysharp.unitask": "2.5.10",
     "com.unity.nuget.newtonsoft-json": "3.2.1",
     "com.endel.nativewebsocket": "1.1.4",
+    "com.unity.modules.unitywebrequest": "1.0.0"
   },
   "repository": {
     "url": "https://github.com/vedalai/unitydiscordbot.git",
