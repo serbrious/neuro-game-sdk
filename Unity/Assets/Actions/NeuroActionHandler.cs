@@ -21,7 +21,7 @@ namespace NeuroSdk.Actions
 
         private void OnApplicationQuit()
         {
-            WebsocketConnection.SendImmediate(new ActionsUnregister(_currentlyRegisteredActions));
+            WebsocketConnection.TrySendImmediate(new ActionsUnregister(_currentlyRegisteredActions));
             _currentlyRegisteredActions = null!;
         }
 
