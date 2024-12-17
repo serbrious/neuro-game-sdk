@@ -8,7 +8,7 @@ There are also official SDKs available for Unity and Godot, as well as community
 
 API changes will be documented in the [CHANGELOG.md](./CHANGELOG.md) file.
 
-Last update: 17th of December 2024, 01:00 GMT
+Last update: 17th of December 2024, 15:50 GMT
 
 ## Contents
 
