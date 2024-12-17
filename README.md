@@ -4,6 +4,12 @@ This repository contains the API documentation for allowing [Neuro-sama](https:/
 
 There are also official SDKs available for Unity and Godot, as well as community-maintained SDKs. If you would like to use the Neuro API in a different engine or programming language, you will have to implement the websocket protocol yourself. If you do so, consider opening a pull request to this repository to share your implementation with others by adding a link to the README.
 
+## Changelog
+
+API changes will be documented in the [CHANGELOG.md](./CHANGELOG.md) file.
+
+Last update: 17th of December 2024, 01:00 GMT
+
 ## Contents
 
 ### API Documentation
