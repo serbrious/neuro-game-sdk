@@ -12,7 +12,7 @@
     "com.unity.modules.unitywebrequest": "1.0.0"
   },
   "repository": {
-    "url": "https://github.com/vedalai/unitydiscordbot.git",
+    "url": "https://github.com/vedalai/neuro-game-sdk.git",
     "type": "git"
   }
 }

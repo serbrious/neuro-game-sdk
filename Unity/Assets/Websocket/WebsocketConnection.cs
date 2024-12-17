@@ -115,7 +115,7 @@ namespace NeuroSdk.Websocket
                 return;
             }
 
-            // Websocket callbacks probably get run on separate threads! Watch out
+            // Websocket callbacks get run on separate threads! Watch out
             _socket = new WebSocket(websocketUrl);
             _socket.OnMessage += (bytes) =>
             {
