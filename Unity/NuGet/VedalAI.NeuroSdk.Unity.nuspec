@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package>
     <metadata>
-        <id>VedalAI.NeuroSdk</id>
+        <id>VedalAI.NeuroSdk.Unity</id>
         <version>$version$</version>
-        <title>Neuro-sama Game SDK</title>
+        <title>Neuro-sama Game SDK for Unity</title>
         <authors>Vedal987, Alexejhero, and Contributors</authors>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <tags>unity AI neuro sama LLM game websocket</tags>
@@ -23,7 +23,8 @@
         <file target="_content\" src="..\README.md" />
 
         <file target="_res\" src="Dependencies\*.dll" />
-        <file target="build\" src="VedalAI.NeuroSDK.props" />
+        <file target="build\" src="VedalAI.NeuroSdk.Unity.props" />
+        <file target="build\" src="VedalAI.NeuroSdk.Unity.targets" />
         <file target="contentfiles\cs\any" src="..\Assets\**\*.cs" />
         <file target="contentfiles\cs\any" src="*.cs" />
     </files>

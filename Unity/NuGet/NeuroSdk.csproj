@@ -16,7 +16,7 @@
         <IsPackable>true</IsPackable>
         <NoBuild>true</NoBuild>
         <NoRestore>true</NoRestore>
-        <NuspecFile>VedalAI.NeuroSDK.nuspec</NuspecFile>
+        <NuspecFile>VedalAI.NeuroSdk.Unity.nuspec</NuspecFile>
     </PropertyGroup>
 
     <!-- debug = check in IDE that it compiles without errors -->
