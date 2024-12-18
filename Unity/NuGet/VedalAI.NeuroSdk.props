@@ -1,0 +1,13 @@
+<Project>
+    <ItemGroup>
+        <Compile Update="@(Compile)">
+            <Visible Condition="'%(NugetItemType)' == 'Compile' and '%(NuGetPackageId)' == 'VedalAI.NeuroSdk'">false</Visible>
+        </Compile>
+        <EmbeddedResource Include="$(MSBuildThisFileDirectory)/../_res/*.dll" Visible="false" />
+        <Reference Include="$(MSBuildThisFileDirectory)/../_res/*.dll" />
+    </ItemGroup>
+    <!-- todo: pre-restore target to ensure UnityEngine.Modules is defined (to prevent error spam from our content cs files)
+            - require a $UnityVersion prop to be defined
+            - add the PackageReference ourselves, forbid user from doing so
+     -->
+</Project>
