@@ -32,7 +32,7 @@ Clone or download this repository, then copy the [`Unity/Assets`](./Assets) fold
 
 1. Go to `Project Settings > Player` and set `Compression Format` to `Gzip` and enable `Decompression Fallback`.
 2. Do one of the following:
-    - Bundle your build along with a web server that can query the `NEURO_SDK_WS_URL` environment variable via a GET request to `/$env/NEURO_SDK_WS_URL` [(Superbox's Web Bundler)](https://discord.com/channels/574720535888396288/1316605675631022192/1317153897340735581). 
+    - Bundle your build along with a web server that can query the `NEURO_SDK_WS_URL` environment variable via a GET request to `/$env/NEURO_SDK_WS_URL` [(Superbox's Web Bundler)](https://github.com/Superbox2147/simple-http-server). 
     - Specify the `WebSocketURL` URL parameter (ex. `http://localhost:8080?WebSocketURL=ws://localhost:8000`)
 
 > [!Note]  
