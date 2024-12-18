@@ -9,6 +9,7 @@
                      Condition="'%(Compile.NuGetPackageId)' == 'VedalAI.NeuroSdk.Unity'" />
         </ItemGroup>
         <Error Condition="'$(_HasUnityReference)' != 'true'"
-               Text="This SDK depends on Unity. Please add a PackageReference to any version of Unity to your project." />
+               Text="This SDK depends on Unity. Please add a PackageReference to any version of UnityEngine.Modules to your project.
+To override this check (e.g. if you are referencing Unity dlls directly from disk), set the _HasUnityReference property to true in a PropertyGroup in your project." />
     </Target>
 </Project>
