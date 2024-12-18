@@ -22,7 +22,7 @@ namespace NeuroSdk.Actions
 
         private void DeserializeFromJson(string? stringifiedData)
         {
-            if (string.IsNullOrEmpty(stringifiedData))
+            if (stringifiedData is null or "")
             {
                 Data = null;
                 return;
@@ -31,7 +31,7 @@ namespace NeuroSdk.Actions
             Data = JToken.Parse(stringifiedData);
         }
 
-        internal static bool TryParse(string? stringifiedData, [NotNullWhen(true)] out ActionJData? actionJData)
+        internal static bool TryParse(string? stringifiedData, out ActionJData? actionJData)
         {
             try
             {

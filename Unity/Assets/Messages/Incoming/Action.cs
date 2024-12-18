@@ -36,7 +36,7 @@ namespace NeuroSdk.Messages.Incoming
 
             string? id = messageData.Data["id"]?.Value<string>();
 
-            if (string.IsNullOrEmpty(id))
+            if (id is null or "")
             {
                 parsedData = null;
                 return ExecutionResult.VedalFailure(Strings.ActionFailedNoId);
@@ -49,7 +49,7 @@ namespace NeuroSdk.Messages.Incoming
                 string? name = messageData.Data["name"]?.Value<string>();
                 string? stringifiedData = messageData.Data["data"]?.Value<string>();
 
-                if (string.IsNullOrEmpty(name)) return ExecutionResult.VedalFailure(Strings.ActionFailedNoName);
+                if (name is null or "") return ExecutionResult.VedalFailure(Strings.ActionFailedNoName);
 
                 INeuroAction? registeredAction = NeuroActionHandler.GetRegistered(name);
                 if (registeredAction == null)
@@ -64,7 +64,7 @@ namespace NeuroSdk.Messages.Incoming
 
                 if (!ActionJData.TryParse(stringifiedData, out ActionJData? jData)) return ExecutionResult.Failure(Strings.ActionFailedInvalidJson);
 
-                ExecutionResult actionValidationResult = registeredAction.Validate(jData, out object? parsedActionData);
+                ExecutionResult actionValidationResult = registeredAction.Validate(jData!, out object? parsedActionData);
                 parsedData.Data = parsedActionData;
 
                 return actionValidationResult;

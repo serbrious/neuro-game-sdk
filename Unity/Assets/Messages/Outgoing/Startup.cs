@@ -1,4 +1,6 @@
-﻿using JetBrains.Annotations;
+﻿#nullable enable
+
+using JetBrains.Annotations;
 using NeuroSdk.Messages.API;
 
 namespace NeuroSdk.Messages.Outgoing

@@ -1,4 +1,6 @@
-﻿namespace NeuroSdk.Json
+﻿#nullable enable
+
+namespace NeuroSdk.Json
 {
     public enum JsonSchemaType
     {

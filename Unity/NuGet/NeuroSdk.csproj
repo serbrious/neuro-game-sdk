@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <IsPackable>true</IsPackable>
+
+        <TargetFramework>net472</TargetFramework>
+        <LangVersion>preview</LangVersion>
+
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <NoWarn>$(NoWarn);CS0436</NoWarn>
+
+        <RootNamespace>NeuroSdk</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="UnityEngine.Modules" Version="2019.4.24" />
+        <Reference Include="Dependencies/endel.nativewebsocket.dll" />
+        <Reference Include="Dependencies/UniTask.dll" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Include="..\Assets\**\*.cs" />
+        <Compile Remove="..\Assets\Examples\*.cs" />
+    </ItemGroup>
+
+</Project>

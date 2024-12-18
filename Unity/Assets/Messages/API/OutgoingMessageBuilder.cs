@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using NeuroSdk.Websocket;
 
 namespace NeuroSdk.Messages.API

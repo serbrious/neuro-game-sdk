@@ -24,9 +24,19 @@ Clone or download this repository, then copy the [`Unity/Assets`](./Assets) fold
 
 ## Setup
 
-1. Drag the `NeuroSdk` prefab into whatever scenes you need to use it in. Ideally, it should be added to the first scene that is loaded, like the title screen or main menu. It will move itself into `DontDestroyOnLoad` after, and multiple instances will be automatically destroyed so you don't have to worry about them.
-2. Fill in the `Game` field in the `Websocket Connection` component with the game name.
-3. Set the `NEURO_SDK_WS_URL` environment variable to the websocket URL you use for testing.
+> [!Important]  
+> Set the `NEURO_SDK_WS_URL` environment variable to the websocket URL you use for testing.
+
+### Using Prefabs
+
+Drag the `NeuroSdk` prefab into whatever scene you need to use it in. Ideally, it should be added to the first scene that is loaded, like the title screen or main menu. It will move itself into `DontDestroyOnLoad` after, and multiple instances will be automatically destroyed so you don't have to worry about them. Afterwards, fill in the `Game` field in the `Websocket Connection` component with the game name.
+
+### Using Code
+
+Call `NeuroSdkSetup.Initialize` with the name of the game that you are using. This will automatically create the necessary objects and set up the SDK. This is the only option you have if you are using the NeuroSdk in a modded environment, from a NuGet package.
+
+> [!Note]  
+> NuGet package is still work in progress and will be published soon.
 
 ### WebGL Additional Setup
 

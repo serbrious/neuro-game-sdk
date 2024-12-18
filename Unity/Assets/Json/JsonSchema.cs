@@ -1,6 +1,5 @@
 ﻿#nullable enable
 
-using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
@@ -11,37 +10,9 @@ namespace NeuroSdk.Json
     public sealed class JsonSchema
     {
         [JsonIgnore]
-        public Dictionary<string, JsonSchema> Defs
-        {
-            get => _defs ??= new Dictionary<string, JsonSchema>();
-            set => _defs = value;
-        }
-
-        [JsonIgnore]
-        public List<JsonSchema> AnyOf
-        {
-            get => _anyOf ??= new();
-            set => _anyOf = value;
-        }
-
-        [JsonIgnore]
-        public List<JsonSchema> OneOf
-        {
-            get => _oneOf ??= new();
-            set => _oneOf = value;
-        }
-
-        [JsonIgnore]
-        public List<JsonSchema> AllOf
-        {
-            get => _allOf ??= new();
-            set => _allOf = value;
-        }
-
-        [JsonIgnore]
         public Dictionary<string, JsonSchema> Properties
         {
-            get => _properties ??= new();
+            get => _properties ??= new Dictionary<string, JsonSchema>();
             set => _properties = value;
         }
 
@@ -81,52 +52,21 @@ namespace NeuroSdk.Json
         [JsonIgnore]
         public List<object> Enum
         {
-            get => _enum ??= new();
+            get => _enum ??= new List<object>();
             set => _enum = value;
-        }
-
-        [JsonIgnore]
-        public Dictionary<string, List<string>> DependentRequired
-        {
-            get => _dependentRequired ??= new();
-            set => _dependentRequired = value;
         }
 
         [JsonIgnore]
         public List<string> Required
         {
-            get => _required ??= new();
+            get => _required ??= new List<string>();
             set => _required = value;
         }
 
         #region Keywords
 
-        [JsonProperty("$ref")]
-        public string? Ref { get; set; }
-
-        [JsonProperty("$defs")]
-        private Dictionary<string, JsonSchema>? _defs;
-
-        [JsonProperty("$anchor")]
-        public string? Anchor { get; set; }
-
-        [JsonProperty("anyOf")]
-        private List<JsonSchema>? _anyOf;
-
-        [JsonProperty("oneOf")]
-        private List<JsonSchema>? _oneOf;
-
-        [JsonProperty("allOf")]
-        private List<JsonSchema>? _allOf;
-
-        [JsonProperty("not")]
-        public JsonSchema? Not { get; set; }
-
         [JsonProperty("properties")]
         private Dictionary<string, JsonSchema>? _properties;
-
-        [JsonProperty("additionalProperties")]
-        public bool? AdditionalProperties { get; set; }
 
         [JsonProperty("items")]
         public JsonSchema? Items { get; set; }
@@ -160,9 +100,6 @@ namespace NeuroSdk.Json
 
         [JsonProperty("minimum")]
         public int? Minimum { get; set; }
-
-        [JsonProperty("dependentRequired")]
-        private Dictionary<string, List<string>>? _dependentRequired;
 
         [JsonProperty("required")]
         private List<string>? _required;

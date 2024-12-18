@@ -86,7 +86,7 @@ namespace NeuroSdk.Actions
                 return;
             }
 
-            if (!string.IsNullOrEmpty(_contextMessage))
+            if (_contextMessage is not (null or ""))
                 Context.Send(_contextMessage, _contextSilent!.Value);
             NeuroActionHandler.RegisterActions(_actions);
 

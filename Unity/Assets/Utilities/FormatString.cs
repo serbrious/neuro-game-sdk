@@ -1,4 +1,6 @@
-﻿using JetBrains.Annotations;
+﻿#nullable enable
+
+using JetBrains.Annotations;
 
 namespace NeuroSdk.Utilities
 {

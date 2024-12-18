@@ -66,7 +66,7 @@ namespace NeuroSdk.Websocket
                 string[] urlSplits = Application.absoluteURL.Split('?');
                 if (urlSplits.Length > 1)
                 {
-                    string[] urlParamSplits = urlSplits[1].Split("WebSocketURL=");
+                    string[] urlParamSplits = urlSplits[1].Split(new[] { "WebSocketURL=" }, StringSplitOptions.None);
                     if (urlParamSplits.Length > 1)
                     {
                         string? param = urlParamSplits[1].Split('&')[0];
@@ -78,7 +78,7 @@ namespace NeuroSdk.Websocket
                 }
             }
 
-            if (string.IsNullOrEmpty(websocketUrl))
+            if (websocketUrl is null or "")
             {
                 try
                 {
@@ -87,7 +87,10 @@ namespace NeuroSdk.Websocket
                     UnityWebRequest request = UnityWebRequest.Get(requestUrl);
 
                     await request.SendWebRequest();
-                    if (request.result == UnityWebRequest.Result.Success) websocketUrl = request.downloadHandler.text;
+                    if (TryGetResult(request, out string result))
+                    {
+                        websocketUrl = result;
+                    }
                 }
                 catch
                 {
@@ -95,14 +98,14 @@ namespace NeuroSdk.Websocket
                 }
             }
 
-            if (string.IsNullOrEmpty(websocketUrl))
+            if (websocketUrl is null or "")
             {
                 websocketUrl = Environment.GetEnvironmentVariable("NEURO_SDK_WS_URL", EnvironmentVariableTarget.Process) ??
                                Environment.GetEnvironmentVariable("NEURO_SDK_WS_URL", EnvironmentVariableTarget.User) ??
                                Environment.GetEnvironmentVariable("NEURO_SDK_WS_URL", EnvironmentVariableTarget.Machine);
             }
 
-            if (string.IsNullOrEmpty(websocketUrl))
+            if (websocketUrl is null or "")
             {
                 string errMessage = "Could not retrieve websocket URL.";
 #if UNITY_EDITOR || !UNITY_WEBGL
@@ -117,18 +120,18 @@ namespace NeuroSdk.Websocket
 
             // Websocket callbacks get run on separate threads! Watch out
             _socket = new WebSocket(websocketUrl);
-            _socket.OnMessage += (bytes) =>
+            _socket.OnMessage += bytes =>
             {
                 string message = Encoding.UTF8.GetString(bytes);
                 ReceiveMessage(message).Forget();
             };
-            _socket.OnError += (error) =>
+            _socket.OnError += error =>
             {
                 Debug.LogError("Websocket connection has encountered an error!");
                 Debug.LogError(error);
                 Reconnect().Forget();
             };
-            _socket.OnClose += (_) =>
+            _socket.OnClose += _ =>
             {
                 Debug.LogError("Websocket connection has been closed!");
                 Reconnect().Forget();
@@ -232,6 +235,20 @@ namespace NeuroSdk.Websocket
                 Debug.LogError("Received invalid message");
                 Debug.LogError(e);
             }
+        }
+
+        private bool TryGetResult(UnityWebRequest request, out string result)
+        {
+#pragma warning disable CS0618 // Type or member is obsolete
+            if (request is { isDone: true, isHttpError: false, isNetworkError: false })
+#pragma warning restore CS0618 // Type or member is obsolete
+            {
+                result = request.downloadHandler.text;
+                return true;
+            }
+
+            result = "";
+            return false;
         }
     }
 }
