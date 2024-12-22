@@ -24,7 +24,7 @@ var _timer: float = 0
 func _init(parent: Node):
 	parent.add_child(self)
 
-func set_force(timeout: float, query: String, state: String, ephemeral_context: bool) -> void:
+func set_force(timeout: float, query: String, state: String, ephemeral_context: bool = false) -> void:
 	if !_validate_frozen():
 		return
 

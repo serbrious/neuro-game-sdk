@@ -1,4 +1,4 @@
-# Neuro Game SDK
+# <img src="Assets/icon.png" width="29" style="vertical-align:middle;">  Neuro Game SDK
 
 This repository contains the API documentation for allowing [Neuro-sama](https://twitch.tv/vedal987) to play games.
 
