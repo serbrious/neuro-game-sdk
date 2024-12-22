@@ -1,13 +1,14 @@
-name: Publish NuGet package for Unity SDK
+name: Publish Unity SDK on NuGet
 
 on: [workflow_dispatch]
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
