@@ -25,6 +25,6 @@
         <file target="build\" src="VedalAI.NeuroSdk.Unity.props" />
         <file target="build\" src="VedalAI.NeuroSdk.Unity.targets" />
         <file target="contentfiles\cs\any\NeuroSdk" src="..\Assets\**\*.cs" exclude="..\Assets\Example\**\*.cs" />
-        <file target="contentfiles\cs\any\NeuroSdk" src="*.cs" />
+        <file target="contentfiles\cs\any\NeuroSdk\Modding" src="Source\*.cs" />
     </files>
 </package>
