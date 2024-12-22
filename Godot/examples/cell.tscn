@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://douadk8pdcrsl"]
 
-[ext_resource type="Texture2D" uid="uid://jxb64ry5lyhi" path="res://addons/neuro-sdk/examples/white.png" id="1_5qo63"]
+[ext_resource type="Texture2D" uid="uid://jxb64ry5lyhi" path="res://examples/white.png" id="1_5qo63"]
 
 [node name="Cell" type="TextureButton"]
 texture_normal = ExtResource("1_5qo63")
