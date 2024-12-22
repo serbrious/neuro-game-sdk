@@ -34,8 +34,8 @@ Third-party SDKs created and maintained by the community.
 - [Gamemaker SDK](https://github.com/noellepunk/Neuro-Gamemaker-SDK)
 
 ### Tools
-- [Neuro API Human Control](https://github.com/Pasu4/neuro-api-human-control) is a graphical testing interface, similar to Randy, but it allows the user to write messages manually.
-- [Jippity](https://github.com/EnterpriseScratchDev/neuro-api-jippity) is a testing tool that aims to be a more "realistic" version of Randy by using OpenAI to mimic Neuro.
+- [Tony](https://github.com/Pasu4/neuro-api-tony) is a graphical testing interface, similar to Randy, but it allows the user to write messages manually.
+- [Jippity](https://github.com/EnterpriseScratchDev/neuro-api-jippity) is a testing tool that aims to be a more "realistic" version of Randy, by using OpenAI to mimic Neuro.
 
 ## Information 
 
