@@ -1,6 +1,6 @@
 # Neuro Unity SDK Usage
 
-There is an example of a Tic Tac Toe game implemented with the Neuro API, which you can find [here](./Assets/Examples/).
+There is an example of a Tic Tac Toe game implemented with the Neuro API, which you can find [here](./Assets/Examples).
 
 ## Sending Contexts
 
