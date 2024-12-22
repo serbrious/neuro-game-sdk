@@ -1,18 +1,23 @@
 ﻿#nullable enable
 
 using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using NeuroSdk.Json;
 using NeuroSdk.Websocket;
 
 namespace NeuroSdk.Actions
 {
+    [PublicAPI]
     public abstract class BaseNeuroAction : INeuroAction
     {
-        private readonly ActionWindow? _window;
+        /// <summary>
+        /// The value that was passed to the actionWindow parameter in the constructor
+        /// </summary>
+        protected readonly ActionWindow? ActionWindow;
 
-        protected BaseNeuroAction(ActionWindow? window)
+        protected BaseNeuroAction(ActionWindow? actionWindow)
         {
-            _window = window;
+            ActionWindow = actionWindow;
         }
 
         public abstract string Name { get; }
@@ -25,9 +30,9 @@ namespace NeuroSdk.Actions
         {
             ExecutionResult result = Validate(actionData, out parsedData);
 
-            if (_window != null)
+            if (ActionWindow != null)
             {
-                return _window.Result(result);
+                return ActionWindow.Result(result);
             }
 
             return result;

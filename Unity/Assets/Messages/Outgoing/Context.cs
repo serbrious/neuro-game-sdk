@@ -24,6 +24,6 @@ namespace NeuroSdk.Messages.Outgoing
         [JsonProperty("silent", Order = 10)]
         private readonly bool _silent;
 
-        public static void Send(string message, bool silent) => WebsocketConnection.TrySend(new Context(message, silent));
+        public static void Send(string message, bool silent = false) => WebsocketConnection.TrySend(new Context(message, silent));
     }
 }
