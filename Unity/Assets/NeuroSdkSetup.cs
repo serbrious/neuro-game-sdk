@@ -6,7 +6,8 @@ using UnityEngine;
 namespace NeuroSdk
 {
     [PublicAPI]
-    public static class NeuroSdkSetup
+    // ReSharper disable once PartialTypeWithSinglePart
+    public static partial class NeuroSdkSetup
     {
         /// <summary>
         /// Use this only if you haven't already added the NeuroSdk prefab in your scenes.

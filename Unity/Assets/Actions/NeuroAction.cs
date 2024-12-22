@@ -12,7 +12,7 @@ namespace NeuroSdk.Actions
     [PublicAPI]
     public abstract class NeuroAction : BaseNeuroAction
     {
-        protected NeuroAction(ActionWindow? window) : base(window)
+        protected NeuroAction(ActionWindow? actionWindow) : base(actionWindow)
         {
         }
 
@@ -36,7 +36,7 @@ namespace NeuroSdk.Actions
     [PublicAPI]
     public abstract class NeuroAction<TData> : BaseNeuroAction
     {
-        protected NeuroAction(ActionWindow? window) : base(window)
+        protected NeuroAction(ActionWindow? actionWindow) : base(actionWindow)
         {
         }
 
@@ -61,7 +61,7 @@ namespace NeuroSdk.Actions
     [PublicAPI]
     public abstract class NeuroActionS<TData> : NeuroAction<TData?> where TData : struct
     {
-        protected NeuroActionS(ActionWindow? window) : base(window)
+        protected NeuroActionS(ActionWindow? actionWindow) : base(actionWindow)
         {
         }
     }

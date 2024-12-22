@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using NeuroSdk.Messages.Outgoing;
 using NeuroSdk.Websocket;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace NeuroSdk.Actions
 {
@@ -48,7 +49,7 @@ namespace NeuroSdk.Actions
 
         #region State
 
-        private enum State
+        public enum State
         {
             Building,
             Registered,
@@ -56,11 +57,11 @@ namespace NeuroSdk.Actions
             Ended
         }
 
-        private State _state = State.Building;
+        public State CurrentState { get; private set; } = State.Building;
 
         private bool ValidateFrozen()
         {
-            if (_state != State.Building)
+            if (CurrentState != State.Building)
             {
                 Debug.LogError("Cannot mutate ActionWindow after it has been registered.");
                 return false;
@@ -74,7 +75,7 @@ namespace NeuroSdk.Actions
         /// </summary>
         public void Register()
         {
-            if (_state != State.Building)
+            if (CurrentState != State.Building)
             {
                 Debug.LogError("Cannot register an ActionWindow multiple times.");
                 return;
@@ -90,7 +91,7 @@ namespace NeuroSdk.Actions
                 Context.Send(_contextMessage, _contextSilent!.Value);
             NeuroActionHandler.RegisterActions(_actions);
 
-            _state = State.Registered;
+            CurrentState = State.Registered;
         }
 
         #endregion
@@ -191,7 +192,7 @@ namespace NeuroSdk.Actions
 
         private void SendForce()
         {
-            _state = State.Forced;
+            CurrentState = State.Forced;
             _shouldForceFunc = null;
             WebsocketConnection.TrySend(new ActionsForce(_forceQueryGetter!(), _forceStateGetter!(), _forceEphemeralContext, _actions));
         }
@@ -233,7 +234,7 @@ namespace NeuroSdk.Actions
 
         private void OnDestroy()
         {
-            if (_state == State.Ended) return;
+            if (CurrentState == State.Ended) return;
             End();
         }
 
@@ -246,18 +247,18 @@ namespace NeuroSdk.Actions
         /// </summary>
         public ExecutionResult Result(ExecutionResult result)
         {
-            if (_state <= State.Building) throw new InvalidOperationException("Cannot handle a result before registering thet ActionWindow.");
-            if (_state >= State.Ended) throw new InvalidOperationException("Cannot handle a result after the ActionWindow has ended.");
+            if (CurrentState <= State.Building) throw new InvalidOperationException("Cannot handle a result before registering thet ActionWindow.");
+            if (CurrentState >= State.Ended) throw new InvalidOperationException("Cannot handle a result after the ActionWindow has ended.");
 
             if (result.Successful) End();
-            // else if (_state == State.Forced) SendForce(); // Vedal is now responsible for retrying forces
+            // else if (CurrentState == State.Forced) SendForce(); // Vedal is now responsible for retrying forces
 
             return result;
         }
 
         private void Update()
         {
-            if (_state != State.Registered) return;
+            if (CurrentState != State.Registered) return;
 
             if (_shouldForceFunc != null && _shouldForceFunc())
             {
@@ -275,7 +276,7 @@ namespace NeuroSdk.Actions
             NeuroActionHandler.UnregisterActions(_actions);
             _shouldForceFunc = null;
             _shouldEndFunc = null;
-            _state = State.Ended;
+            CurrentState = State.Ended;
             Destroy(this);
         }
 
