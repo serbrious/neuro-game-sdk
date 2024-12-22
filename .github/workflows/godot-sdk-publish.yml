@@ -16,7 +16,7 @@ jobs:
       - name: Create archive
         run: |
           cd Godot
-          zip -r NeuroSdk.zip addons
+          zip -r NeuroSdk.zip addons neuro_sdk_config.gd
       
       - name: Upload to release
         uses: svenstaro/upload-release-action@v2
