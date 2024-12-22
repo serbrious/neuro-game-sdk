@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
 
 namespace NeuroSdk.Resources
 {
@@ -28,6 +29,9 @@ namespace NeuroSdk.Resources
             if (buffer == null) return null;
 
             Assembly assembly = Assembly.Load(buffer);
+
+            Debug.Log("Loading embedded assembly " + targetedName);
+
             return Cache(targetedName, assembly);
         }
 

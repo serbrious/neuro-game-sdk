@@ -7,7 +7,8 @@ namespace NeuroSdk
 {
     partial class NeuroSdkSetup
     {
-        static NeuroSdkSetup()
+        [ModuleInitializer]
+        internal static void ModuleInitializer()
         {
             ResourceManager.InjectAssemblies();
             InitializeUniTask();
