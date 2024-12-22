@@ -1,10 +1,18 @@
-param (
-    # you can get version from git if your tag names are semver-compatible
-    #[Parameter()]
-    #[string]$Version = $(git describe --tags --abbrev=0)
-    [Parameter(Mandatory=$true)]
-    [string]$Version
-)
+$PackageJsonPath = "../Assets/package.json"
+
+if (-Not (Test-Path $PackageJsonPath)) {
+    Write-Error "package.json not found at path: $PackageJsonPath"
+    exit 1
+}
+
+$PackageJsonContent = Get-Content -Path $PackageJsonPath -Raw | ConvertFrom-Json
+$Version = $PackageJsonContent.version
+
+if (-Not $Version) {
+    Write-Error "Version not found in package.json"
+    exit 1
+}
+
 $PackNuspecProps = @{
     "version" = $Version;
     "branch" = $(git rev-parse --abbrev-ref HEAD);
