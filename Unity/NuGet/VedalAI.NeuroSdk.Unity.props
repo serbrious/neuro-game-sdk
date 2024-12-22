@@ -4,7 +4,7 @@
         <Compile Update="@(Compile)">
             <Visible Condition="'%(NugetItemType)' == 'Compile' and '%(NuGetPackageId)' == 'VedalAI.NeuroSdk.Unity'">false</Visible>
         </Compile>
-        <EmbeddedResource Include="$(MSBuildThisFileDirectory)/../_res/*.dll" Visible="false" />
+        <EmbeddedResource Include="$(MSBuildThisFileDirectory)/../_res/*.dll" Visible="false" LinkBase="NeuroSdk\Resources" />
         <Reference Include="$(MSBuildThisFileDirectory)/../_res/*.dll" />
     </ItemGroup>
 </Project>
