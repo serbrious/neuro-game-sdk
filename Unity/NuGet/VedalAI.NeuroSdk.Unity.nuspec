@@ -24,7 +24,7 @@
         <file target="_res\" src="Dependencies\*.dll" />
         <file target="build\" src="VedalAI.NeuroSdk.Unity.props" />
         <file target="build\" src="VedalAI.NeuroSdk.Unity.targets" />
-        <file target="contentfiles\cs\any" src="..\Assets\**\*.cs" />
-        <file target="contentfiles\cs\any" src="*.cs" />
+        <file target="contentfiles\cs\any\NeuroSdk" src="..\Assets\**\*.cs" />
+        <file target="contentfiles\cs\any\NeuroSdk" src="*.cs" />
     </files>
 </package>
