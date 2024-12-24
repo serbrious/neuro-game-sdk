@@ -23,6 +23,9 @@ You can send POST requests to the http port in order to mimic the websocket serv
 
 For example, by sending the command below, you can simulate an action being executed.
 
+Randy will only send actions if he is forced to. He will not execute actions randomly. Use the above example to manually execute actions.
+
+
 ```bash
 curl --request POST \
   --url http://localhost:1337/ \
@@ -37,7 +40,20 @@ curl --request POST \
 }'
 ```
 
-Randy will only send actions if he is forced to. He will not execute actions randomly. Use the above example to manually execute actions.
+## Running Randy via Docker
+
+Randy can also be run in a container should you not wish to install node/npm; the scripts to do so are in Randy/docker.
+
+You will need a working Docker install, then:
+
+To build:  
+Run `docker compose build` within the 'Randy/docker' folder.  
+
+To start the container listening on the default ports:  
+Run `docker compose up` within the 'Randy/docker' folder.  
+
+To exit, you can ctrl+c in the terminal - compose without the '-d' option will not detach from the terminal.
+
 
 > [!Note]  
 > Randy sometimes refuses to let go of the port when closed, not sure if it's my fault or not but I can't be bothered to fix it.  

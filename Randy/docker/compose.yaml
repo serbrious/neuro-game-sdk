@@ -1,0 +1,11 @@
+# Simple compose wrapper for Randy
+name: randy
+services:
+  randy:
+    image: randy:latest
+    build:
+      dockerfile: docker/Dockerfile
+      context: ../
+    ports:
+      - "8000:8000"
+      - "1337:1337"
